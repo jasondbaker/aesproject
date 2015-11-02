@@ -6,18 +6,21 @@ describe('Controller: MainCtrl', function () {
   beforeEach(module('aesApp'));
 
   var MainCtrl,
-    scope;
+    scope,
+    aes;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, _aes_) {
     scope = $rootScope.$new();
+    aes = _aes_;
+
     MainCtrl = $controller('MainCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(MainCtrl.awesomeThings.length).toBe(3);
+  it('should return valid result for foo', function () {
+    expect(scope.foo).toBe(2);
   });
 });

@@ -8,5 +8,6 @@
  *
  * Main module of the application.
  */
-angular
-  .module('aesApp', ['ngRoute']);
+angular.module('aesApp', ['aesApp.services', 'ngRoute']);
+
+angular.module('aesApp.services',[]);
