@@ -55,8 +55,21 @@ angular.module('aesApp.services', [])
 
     var _pub = {
 
-      test : function(test){
-        return test+1;
+      // substitution box function
+      // replace state element with value in substitution box
+      // reverse param determines which sbox is used
+      substitutionBox : function(state, bReverse) {
+        var i;
+        if (bReverse) {
+          for (i=0; i<16; i++) {
+            state[i] = rsbox[state[i]];
+          }
+        } else {
+          for (i=0; i<16; i++) {
+            state[i] = sbox[state[i]];
+          }
+        }
+        return state;
       }
     };
 
