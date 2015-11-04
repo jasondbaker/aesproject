@@ -17,25 +17,75 @@ describe('Service: aes', function () {
   }));
 
   it('should replace value based on substitution box', function () {
-    var state = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,255];
+    var state = [
+                  [1,5,9,13],
+                  [2,6,10,14],
+                  [3,7,11,15],
+                  [4,8,12,16]
+                ];
 
     state = aes.substitutionBox(state,false);
 
-    expect(state[0]).toBe(0x63);
-    expect(state[1]).toBe(0x7c);
-    expect(state[15]).toBe(0x16);
+    expect(state[0][0]).toBe(0x7c);
+    expect(state[1][0]).toBe(0x77);
+    expect(state[3][3]).toBe(0xca);
 
   });
 
   it('should replace value based on reverse substitution box', function () {
-    var state = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,255];
+    var state = [
+                  [1,5,9,13],
+                  [2,6,10,14],
+                  [3,7,11,15],
+                  [4,8,12,16]
+                ];
 
     state = aes.substitutionBox(state,true);
 
-    expect(state[0]).toBe(0x52);
-    expect(state[1]).toBe(0x09);
-    expect(state[15]).toBe(0x7d);
+    expect(state[0][0]).toBe(0x09);
+    expect(state[1][0]).toBe(0x6a);
+    expect(state[3][3]).toBe(0x7c);
 
+  });
+
+  it('should shift rows', function () {
+    var state = [
+                  [1,5,9,13],
+                  [2,6,10,14],
+                  [3,7,11,15],
+                  [4,8,12,16]
+                ];
+
+    state = aes.shiftRows(state, false);
+
+    expect(state[0][0]).toBe(1);
+    expect(state[0][3]).toBe(13);
+    expect(state[1][0]).toBe(6);
+    expect(state[1][3]).toBe(2);
+    expect(state[2][0]).toBe(11);
+    expect(state[2][3]).toBe(7);
+    expect(state[3][0]).toBe(16);
+    expect(state[3][3]).toBe(12);
+  });
+
+  it('should shift rows in reverse', function () {
+    var state = [
+                  [1,5,9,13],
+                  [2,6,10,14],
+                  [3,7,11,15],
+                  [4,8,12,16]
+                ];
+
+    state = aes.shiftRows(state, true);
+
+    expect(state[0][0]).toBe(1);
+    expect(state[0][3]).toBe(13);
+    expect(state[1][0]).toBe(14);
+    expect(state[1][3]).toBe(10);
+    expect(state[2][0]).toBe(11);
+    expect(state[2][3]).toBe(7);
+    expect(state[3][0]).toBe(8);
+    expect(state[3][3]).toBe(4);
   });
 
 });

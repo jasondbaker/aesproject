@@ -32,6 +32,5 @@ angular.module('aesApp')
 
     $scope.convMessage = hexArrayToString($scope.byteMessage);
 
-    $scope.foo = aes.test(1);
 
   }]);

@@ -55,20 +55,48 @@ angular.module('aesApp.services', [])
 
     var _pub = {
 
+      // shift row function
+      // shift matrix columns in each row based on a shift amount
+      // bReverse parameter determines direction (true = decryption)
+      shiftRows : function(state, bReverse) {
+        var row, col;
+        var temp = []; // temp array to copy row values in matrix
+        var shift = 0;  // counter to track shift amount
+
+        // loop through each row in matrix
+        // first row (index=0) is not shifted
+        for (row=1; row < 4; row++) {
+          shift++; // each successive row is shifted by one additional byte
+          for (col=0; col < 4; col++) {
+            temp[col] = state[row][col]; // copy values from current row to temp array
+          }
+          for (col=0; col < 4; col++) {
+            // rotate the column values based on the shift amount and direction
+            if (bReverse) {
+              state[row][col] = temp[col - shift < 0 ? col - shift + 4 : col - shift];
+            } else {
+              state[row][col] = temp[col + shift > 3 ? col + shift - 4 : col + shift];
+            }
+          }
+
+        }
+        return state;
+
+      },
+
       // substitution box function
       // replace state element with value in substitution box
       // reverse param determines which sbox is used
       substitutionBox : function(state, bReverse) {
-        var i;
-        if (bReverse) {
-          for (i=0; i<16; i++) {
-            state[i] = rsbox[state[i]];
-          }
-        } else {
-          for (i=0; i<16; i++) {
-            state[i] = sbox[state[i]];
+        var row, col;
+        var box = bReverse ? rsbox : sbox;
+
+        for (row=0; row<4; row++) {
+          for (col=0; col<4; col++) {
+            state[row][col] = box[state[row][col]];
           }
         }
+
         return state;
       }
     };

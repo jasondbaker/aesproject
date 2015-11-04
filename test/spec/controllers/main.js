@@ -20,7 +20,7 @@ describe('Controller: MainCtrl', function () {
     });
   }));
 
-  it('should return valid result for foo', function () {
-    expect(scope.foo).toBe(2);
-  });
+  //it('should return valid result for foo', function () {
+  //  expect(scope.foo).toBe(2);
+  //});
 });
