@@ -264,4 +264,33 @@ describe('Service: aes', function () {
 
   });
 
+  it('should return an offset key', function () {
+
+    var key = [0, 1, 2, 3, 4, 5, 6, 7];
+
+    var newKey = aes.keyOffset(key, 0);
+
+    expect(newKey[0]).toBe(0);
+    expect(newKey[3]).toBe(3);
+    expect(newKey[4]).toBeUndefined();
+
+    var newKey2 = aes.keyOffset(key, 4);
+
+    expect(newKey2[0]).toBe(4);
+    expect(newKey2[3]).toBe(7);
+
+  });
+
+  it('should return a round constant value', function () {
+
+
+    var rcon = aes.roundCon(1);
+
+    expect(rcon[0]).toBe(0x01);
+    expect(rcon[1]).toBe(0x00);
+    expect(rcon[2]).toBe(0x00);
+    expect(rcon[3]).toBe(0x00);
+
+  });
+
 });
