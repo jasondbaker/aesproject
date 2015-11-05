@@ -139,7 +139,7 @@ angular.module('aesApp.services', [])
         for (col=0; col<4; col++) {
           for (row=0; row<4; row++) {
             /*jslint bitwise: true */
-            state[row][col] = state[row][col] ^ key[row][col];
+            state[row][col] = state[row][col] ^ key[(col*4)+row];
           }
         }
         return state;
