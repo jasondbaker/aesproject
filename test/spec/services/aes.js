@@ -261,12 +261,7 @@ describe('Service: aes', function () {
 
   it('should return an offset key', function () {
 
-    var key = [
-      0x00,0x01,0x02,0x03,
-      0x04,0x05,0x06,0x07,
-      0x08,0x09,0x0A,0x0B,
-      0x0C,0x0D,0x0E,0x0F
-    ];
+    var key = [0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F];
 
     var newKey = aes.keyOffset(key, 0);
 
@@ -329,6 +324,48 @@ describe('Service: aes', function () {
     expect(newKey[15]).toBe(0x75);
     expect(newKey[16]).toBe(0xe2);
     expect(newKey[175]).toBe(0x26);
+
+  });
+
+  it('should get a round key based on the expanded key', function () {
+
+    var expKey = [
+      0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+      16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,
+      32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47
+    ];
+
+    var roundKey = aes.getRoundKey(expKey,0);
+
+    expect(roundKey[0]).toBe(0);
+    expect(roundKey[15]).toBe(15);
+
+    roundKey = aes.getRoundKey(expKey,1);
+
+    expect(roundKey[0]).toBe(16);
+    expect(roundKey[15]).toBe(31);
+
+    roundKey = aes.getRoundKey(expKey,2);
+
+    expect(roundKey[0]).toBe(32);
+    expect(roundKey[15]).toBe(47);
+
+  });
+
+  it('should transform a state to a one dimensional array', function () {
+
+    var state = [
+                  [1,5,9,13],
+                  [2,6,10,14],
+                  [3,7,11,15],
+                  [4,8,12,16]
+                ];
+
+    var t = aes.stateToArray(state);
+
+    expect(t[0]).toBe(1);
+    expect(t[10]).toBe(11);
+    expect(t[15]).toBe(16);
 
   });
 

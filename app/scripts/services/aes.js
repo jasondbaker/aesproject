@@ -183,6 +183,13 @@ angular.module('aesApp.services', [])
         return expKey;
       },
 
+      // getRoundKey function
+      // return a 16-byte round key when provided an expanded key and round number
+      getRoundKey : function(expKey, round) {
+        var offset = round * 16;
+        return expKey.slice(offset, offset+16);
+      },
+
       // key offset function
       // get 4-byte word from key based on offset
       keyOffset : function(key, offset) {
@@ -288,6 +295,21 @@ angular.module('aesApp.services', [])
         }
         return state;
 
+      },
+
+      // stateToArray helper function
+      // transform 4x4 state matrix to one dimensional array
+      stateToArray : function(state) {
+        var row, col;
+        var t = [];
+
+        // iterate over state matrix by rows and then columns
+        for (col=0; col<4; col++) {
+          for (row=0; row<4; row++) {
+            t.push(state[row][col]);
+          }
+        }
+        return t;
       },
 
       // substitution box function
