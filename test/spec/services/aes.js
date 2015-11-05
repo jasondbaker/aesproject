@@ -225,4 +225,43 @@ describe('Service: aes', function () {
     expect(state[3][3]).toBe(0x1A);
   });
 
+  it('should rotate a word', function () {
+
+    var word = [1,2,3,4];
+
+    word = aes.rotWord(word);
+
+    expect(word[0]).toBe(2);
+    expect(word[1]).toBe(3);
+    expect(word[2]).toBe(4);
+    expect(word[3]).toBe(1);
+
+  });
+
+  it('should use a sbox on a word during encryption', function () {
+
+    var word = [0x20, 0x46, 0x75, 0x67];
+
+    word = aes.subWord(word, false);
+
+    expect(word[0]).toBe(0xB7);
+    expect(word[1]).toBe(0x5A);
+    expect(word[2]).toBe(0x9D);
+    expect(word[3]).toBe(0x85);
+
+  });
+
+  it('should use a sbox on a word during decryption', function () {
+
+    var word = [0xB7, 0x5A, 0x9D, 0x85];
+
+    word = aes.subWord(word, true);
+
+    expect(word[0]).toBe(0x20);
+    expect(word[1]).toBe(0x46);
+    expect(word[2]).toBe(0x75);
+    expect(word[3]).toBe(0x67);
+
+  });
+
 });

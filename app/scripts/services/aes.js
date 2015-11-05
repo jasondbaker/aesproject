@@ -180,6 +180,17 @@ angular.module('aesApp.services', [])
         return newCol;
       },
 
+      // rotate word function
+      // shifts 4 bytes as part of the key expansion process
+      rotWord : function(word) {
+        var t = word[0];
+        for (var i=0; i<3; i++) {
+          word[i] = word[i+1];
+        }
+        word[3] = t;
+        return word;
+      },
+
       // shift row function
       // shift matrix columns in each row based on a shift amount
       // bReverse parameter determines direction (true = decryption)
@@ -223,7 +234,20 @@ angular.module('aesApp.services', [])
         }
 
         return state;
+      },
+
+      // substitute word function
+      // perform sbox substitution on each word for key expansion
+      // bReverse param determines direction
+      subWord : function(word, bReverse) {
+        // determine which sbox to use
+        var box = bReverse ? rsbox : sbox;
+        for (var i=0; i<4; i++) {
+          word[i] = box[word[i]];
+        }
+        return word;
       }
+
     };
 
     return _pub;
