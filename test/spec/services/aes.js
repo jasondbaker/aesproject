@@ -325,6 +325,15 @@ describe('Service: aes', function () {
     expect(newKey[16]).toBe(0xe2);
     expect(newKey[175]).toBe(0x26);
 
+    // official NIST 128-bit cipher key expansion test (FIPS-197)
+    key = [0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
+      0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c];
+
+    newKey = aes.expandKey(key);
+
+    expect(newKey[0]).toBe(0x2b);
+    expect(newKey[175]).toBe(0xa6);
+
   });
 
   it('should get a round key based on the expanded key', function () {
@@ -335,17 +344,17 @@ describe('Service: aes', function () {
       32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47
     ];
 
-    var roundKey = aes.getRoundKey(expKey,0);
+    var roundKey = aes.getRoundKey(expKey,-1);
 
     expect(roundKey[0]).toBe(0);
     expect(roundKey[15]).toBe(15);
 
-    roundKey = aes.getRoundKey(expKey,1);
+    roundKey = aes.getRoundKey(expKey,0);
 
     expect(roundKey[0]).toBe(16);
     expect(roundKey[15]).toBe(31);
 
-    roundKey = aes.getRoundKey(expKey,2);
+    roundKey = aes.getRoundKey(expKey,1);
 
     expect(roundKey[0]).toBe(32);
     expect(roundKey[15]).toBe(47);
@@ -366,6 +375,52 @@ describe('Service: aes', function () {
     expect(t[0]).toBe(1);
     expect(t[10]).toBe(11);
     expect(t[15]).toBe(16);
+
+  });
+
+  it('should transform an array to a state matrix', function () {
+
+    var message = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+
+    var state = aes.arrayToState(message);
+
+    expect(state[0][0]).toBe(0);
+    expect(state[1][0]).toBe(1);
+    expect(state[2][0]).toBe(2);
+    expect(state[3][0]).toBe(3);
+    expect(state[0][1]).toBe(4);
+    expect(state[0][2]).toBe(8);
+    expect(state[0][3]).toBe(12);
+    expect(state[3][3]).toBe(15);
+  });
+
+  it('should be able to encrypt a message', function () {
+
+    // official NIST AES-128 test (FIPS-197)
+    var message = [0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+       0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF];
+
+    var key = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+      0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F];
+
+    var cipherText = aes.encrypt(message, key);
+
+    expect(cipherText[0]).toBe('69');
+    expect(cipherText[1]).toBe('c4');
+    expect(cipherText[2]).toBe('e0');
+    expect(cipherText[3]).toBe('d8');
+    expect(cipherText[4]).toBe('6a');
+    expect(cipherText[5]).toBe('7b');
+    expect(cipherText[6]).toBe('4');
+    expect(cipherText[7]).toBe('30');
+    expect(cipherText[8]).toBe('d8');
+    expect(cipherText[9]).toBe('cd');
+    expect(cipherText[10]).toBe('b7');
+    expect(cipherText[11]).toBe('80');
+    expect(cipherText[12]).toBe('70');
+    expect(cipherText[13]).toBe('b4');
+    expect(cipherText[14]).toBe('c5');
+    expect(cipherText[15]).toBe('5a');
 
   });
 

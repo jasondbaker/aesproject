@@ -157,6 +157,48 @@ angular.module('aesApp.services', [])
         return t;
       },
 
+      arrayToState : function(message) {
+        var row, col;
+        var state = [[],[],[],[]];
+
+        // iterate over state matrix by rows and then columns
+        for (col=0; col<4; col++) {
+          for (row=0; row<4; row++) {
+            state[row].push(message[(col*4)+row]);
+          }
+        }
+        return state;
+      },
+
+      // encrypt function
+      // this is the key driver function that encrypts a message based on a key
+      // currently limited to 16-byte (128-bit) key and message (AES-128)
+      encrypt : function(message, key) {
+        var round, roundSize = 10;
+        var state;
+
+        // generate an expanded key
+        var expKey = this.expandKey(key);
+
+        // create state and add initial round key before starting rounds
+        state = this.addRoundKey(this.arrayToState(message), this.getRoundKey(expKey,-1));
+
+        // perform all four encryption steps in the rounds
+        for (round=0; round<roundSize-1; round++) {
+          state = this.substitutionBox(state,false);
+          state = this.shiftRows(state, false);
+          state = this.mixState(state,false);
+          state = this.addRoundKey(state, this.getRoundKey(expKey,round));
+        }
+
+        // perform final round step without mixing columns
+        state = this.substitutionBox(state,false);
+        state = this.shiftRows(state, false);
+        state = this.addRoundKey(state, this.getRoundKey(expKey,round));
+
+        return this.arrayToHex(this.stateToArray(state));
+      },
+
       // key expansion function
       expandKey : function(key) {
         var x;
@@ -185,8 +227,9 @@ angular.module('aesApp.services', [])
 
       // getRoundKey function
       // return a 16-byte round key when provided an expanded key and round number
+      // round = -1 for the initial round
       getRoundKey : function(expKey, round) {
-        var offset = round * 16;
+        var offset = (round+1) * 16;
         return expKey.slice(offset, offset+16);
       },
 
@@ -231,9 +274,7 @@ angular.module('aesApp.services', [])
         for (row=0; row < 4; row++) {
           // iterate over each column value during calculation
           for (i=0; i < 4; i++) {
-            if (stateCol[row] === 0) {
-              t[i] = eTable[0];
-            } else {
+
               val = lTable[stateCol[i]] + lTable[matrix[row][i]];
               // need to keep val within two-digit hex bound
               if (val > 0xFF) {
@@ -241,7 +282,7 @@ angular.module('aesApp.services', [])
               } else {
                 t[i] = eTable[val];
               }
-            }
+
           }
 
           /*jslint bitwise: true */
