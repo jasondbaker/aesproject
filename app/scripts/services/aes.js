@@ -113,15 +113,37 @@ angular.module('aesApp.services', [])
         return 1;
       },
 
-      // mix column function
+      // mix columns in current state matrix
       // bReverse parameter determines direction (true = decryption)
-      mixColumn : function(stateCol, colNum, bReverse) {
-        var row, i, val;
-        var newCol = [], t = [];
+      mixState : function(state, bReverse) {
+        var row, col;
+        var t = [];
 
         // determine which matrix to use for the multiplication
         var matrix = bReverse ? inverseMultiplicationMatrix : multiplicationMatrix;
-        console.log('matrix=',matrix);
+
+        // iterate over each column in state matrix
+        for (col=0; col<4; col++) {
+          // copy current column values to temporary array
+          for (row=0; row < 4; row++) {
+            t[row] = state[row][col];
+          }
+          // mix column
+          t = this.mixColumn(t, col, matrix);
+          // copy mixed column back to state matrix
+          for (row = 0; row < 4; row++) {
+            state[row][col] = t[row];
+          }
+        }
+        return state;
+      },
+
+      // mix column function
+      // bReverse parameter determines direction (true = decryption)
+      mixColumn : function(stateCol, colNum, matrix) {
+        var row, i, val;
+        var newCol = [], t = [];
+
         // calculate value for each row in column
         for (row=0; row < 4; row++) {
           // iterate over each column value during calculation
