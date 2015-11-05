@@ -125,10 +125,10 @@ describe('Service: aes', function () {
   it('should mix all columns in current state for encryption', function () {
 
     var state = [
-                  [0xD4,5,9,13],
-                  [0xBF,6,10,14],
-                  [0x5D,7,11,15],
-                  [0x30,8,12,16]
+                  [0xD4, 0xE0, 0xB8, 0x1E],
+                  [0xBF, 0xB4, 0x41, 0x27],
+                  [0x5D, 0x52, 0x11, 0x98],
+                  [0x30, 0xAE, 0xF1, 0xE5]
                 ];
 
     state = aes.mixState(state, false);
@@ -137,15 +137,30 @@ describe('Service: aes', function () {
     expect(state[1][0]).toBe(0x66);
     expect(state[2][0]).toBe(0x81);
     expect(state[3][0]).toBe(0xE5);
+
+    expect(state[0][1]).toBe(0xE0);
+    expect(state[1][1]).toBe(0xCB);
+    expect(state[2][1]).toBe(0x19);
+    expect(state[3][1]).toBe(0x9A);
+
+    expect(state[0][2]).toBe(0x48);
+    expect(state[1][2]).toBe(0xF8);
+    expect(state[2][2]).toBe(0xD3);
+    expect(state[3][2]).toBe(0x7A);
+
+    expect(state[0][3]).toBe(0x28);
+    expect(state[1][3]).toBe(0x06);
+    expect(state[2][3]).toBe(0x26);
+    expect(state[3][3]).toBe(0x4C);
   });
 
   it('should mix all columns in current state for decryption', function () {
 
     var state = [
-                  [0x04,5,9,13],
-                  [0x66,6,10,14],
-                  [0x81,7,11,15],
-                  [0xE5,8,12,16]
+                  [0x04,0xE0,0x48,0x28],
+                  [0x66,0xCB,0xF8,0x06],
+                  [0x81,0x19,0xD3,0x26],
+                  [0xE5,0x9A,0x7A,0x4C]
                 ];
 
     state = aes.mixState(state, true);
@@ -154,6 +169,21 @@ describe('Service: aes', function () {
     expect(state[1][0]).toBe(0xBF);
     expect(state[2][0]).toBe(0x5D);
     expect(state[3][0]).toBe(0x30);
+
+    expect(state[0][1]).toBe(0xE0);
+    expect(state[1][1]).toBe(0xB4);
+    expect(state[2][1]).toBe(0x52);
+    expect(state[3][1]).toBe(0xAE);
+
+    expect(state[0][2]).toBe(0xB8);
+    expect(state[1][2]).toBe(0x41);
+    expect(state[2][2]).toBe(0x11);
+    expect(state[3][2]).toBe(0xF1);
+
+    expect(state[0][3]).toBe(0x1E);
+    expect(state[1][3]).toBe(0x27);
+    expect(state[2][3]).toBe(0x98);
+    expect(state[3][3]).toBe(0xE5);
   });
 
 });
