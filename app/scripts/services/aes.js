@@ -113,6 +113,19 @@ angular.module('aesApp.services', [])
         return 1;
       },
 
+      // add round key function
+      addRoundKey : function(state, key) {
+        var row, col;
+
+        for (col=0; col<4; col++) {
+          for (row=0; row<4; row++) {
+            /*jslint bitwise: true */
+            state[row][col] = state[row][col] ^ key[row][col];
+          }
+        }
+        return state;
+      },
+
       // mix columns in current state matrix
       // bReverse parameter determines direction (true = decryption)
       mixState : function(state, bReverse) {

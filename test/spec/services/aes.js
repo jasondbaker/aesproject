@@ -186,4 +186,43 @@ describe('Service: aes', function () {
     expect(state[3][3]).toBe(0xE5);
   });
 
+  it('should add a round key', function () {
+
+    var state = [
+                  [0x54,0x4F,0x4E,0x20],
+                  [0x77,0x6E,0x69,0x54],
+                  [0x6F,0x65,0x6E,0x77],
+                  [0x20,0x20,0x65,0x6F]
+                ];
+
+    var key = [
+                  [0x54,0x73,0x20,0x67],
+                  [0x68,0x20,0x4B,0x20],
+                  [0x61,0x6D,0x75,0x46],
+                  [0x74,0x79,0x6E,0x75]
+                ];
+
+    state = aes.addRoundKey(state, key);
+
+    expect(state[0][0]).toBe(0x00);
+    expect(state[1][0]).toBe(0x1F);
+    expect(state[2][0]).toBe(0x0E);
+    expect(state[3][0]).toBe(0x54);
+
+    expect(state[0][1]).toBe(0x3C);
+    expect(state[1][1]).toBe(0x4E);
+    expect(state[2][1]).toBe(0x08);
+    expect(state[3][1]).toBe(0x59);
+
+    expect(state[0][2]).toBe(0x6E);
+    expect(state[1][2]).toBe(0x22);
+    expect(state[2][2]).toBe(0x1B);
+    expect(state[3][2]).toBe(0x0B);
+
+    expect(state[0][3]).toBe(0x47);
+    expect(state[1][3]).toBe(0x74);
+    expect(state[2][3]).toBe(0x31);
+    expect(state[3][3]).toBe(0x1A);
+  });
+
 });
