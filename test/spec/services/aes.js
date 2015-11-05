@@ -88,4 +88,26 @@ describe('Service: aes', function () {
     expect(state[3][3]).toBe(4);
   });
 
+  it('should mix a column for encryption', function () {
+    var stateCol = [0xD4, 0xBF, 0x5D, 0x30];
+
+    stateCol = aes.mixColumn(stateCol, 0, false);
+
+    expect(stateCol[0]).toBe(0x04);
+    expect(stateCol[1]).toBe(0x66);
+    expect(stateCol[2]).toBe(0x81);
+    expect(stateCol[3]).toBe(0xE5);
+  });
+
+  it('should mix a column for decryption', function () {
+    var stateCol = [0x04, 0x66, 0x81, 0xE5];
+
+    stateCol = aes.mixColumn(stateCol, 0, true);
+
+    expect(stateCol[0]).toBe(0xD4);
+    expect(stateCol[1]).toBe(0xBF);
+    expect(stateCol[2]).toBe(0x5D);
+    expect(stateCol[3]).toBe(0x30);
+  });
+
 });
