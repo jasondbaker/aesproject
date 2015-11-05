@@ -106,7 +106,6 @@ angular.module('aesApp.services', [])
 
     // round key constant table
     var rCon = [
-      [0x00, 0x00, 0x00, 0x00],
       [0x01, 0x00, 0x00, 0x00],
       [0x02, 0x00, 0x00, 0x00],
       [0x04, 0x00, 0x00, 0x00],
@@ -144,6 +143,44 @@ angular.module('aesApp.services', [])
           }
         }
         return state;
+      },
+
+      // arrayToHex helper function
+      // converts an array of decimal numbers to an array of hex string values for display
+      arrayToHex : function(a) {
+        var t = [];
+        var aLength = a.length;
+
+        for (var i=0; i<aLength; i++) {
+          t[i] = a[i].toString(16);
+        }
+        return t;
+      },
+
+      // key expansion function
+      expandKey : function(key) {
+        var x;
+        var expKey = []; //newly expanded key
+
+        // each round adds a 4-byte word to the expanded key
+        if (key.length === 16) { x = 10;}
+        var maxRounds = (key.length * (x + 1))/4;
+        for (var round=0; round < maxRounds; round++) {
+          // copy words from existing key to new key during first 4 rounds
+          if (round < 4) {
+            expKey = expKey.concat(this.keyOffset(key, round*4));
+          } else if (round%4 === 0){
+            //perform complete set of steps every 4th round
+            // this complex looking statement performs the following calculation:
+            // Sub Word(Rot Word(EK((round-1)*4))) XOR Rcon((round/4)-1) XOR EK((round-4)*4)
+            expKey = expKey.concat(this.xorWords( this.xorWords( this.subWord(this.rotWord(this.keyOffset(expKey, (round-1)*4))), this.roundCon((round/4)-1)), this.keyOffset(expKey, (round-4)*4)));
+          } else {
+            //simple XOR every other round
+            //EK((round-1)*4)XOR EK((round-4)*4)
+            expKey = expKey.concat( this.xorWords( this.keyOffset(expKey,(round-1)*4), this.keyOffset(expKey,(round-4)*4)));
+          }
+        }
+        return expKey;
       },
 
       // key offset function
@@ -200,7 +237,8 @@ angular.module('aesApp.services', [])
             }
           }
 
-          /*jslint bitwise: true */ newCol[row] = t[0] ^ t[1] ^ t[2] ^ t[3];
+          /*jslint bitwise: true */
+          newCol[row] = t[0] ^ t[1] ^ t[2] ^ t[3];
 
         }
         return newCol;
@@ -278,6 +316,18 @@ angular.module('aesApp.services', [])
           word[i] = box[word[i]];
         }
         return word;
+      },
+
+      // xor words function
+      // helper function for key explansion process
+      // xor two 4-byte words
+      xorWords : function(word1, word2) {
+        var t = []; //temp array to hold xor'ed result
+        for (var i=0; i<4; i++) {
+          /*jslint bitwise: true */
+          t[i] = word1[i] ^ word2[i];
+        }
+        return t;
       }
 
     };

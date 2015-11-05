@@ -266,30 +266,74 @@ describe('Service: aes', function () {
 
   it('should return an offset key', function () {
 
-    var key = [0, 1, 2, 3, 4, 5, 6, 7];
+    var key = [
+      0x00,0x01,0x02,0x03,
+      0x04,0x05,0x06,0x07,
+      0x08,0x09,0x0A,0x0B,
+      0x0C,0x0D,0x0E,0x0F
+    ];
 
     var newKey = aes.keyOffset(key, 0);
 
-    expect(newKey[0]).toBe(0);
-    expect(newKey[3]).toBe(3);
-    expect(newKey[4]).toBeUndefined();
-
-    var newKey2 = aes.keyOffset(key, 4);
-
-    expect(newKey2[0]).toBe(4);
-    expect(newKey2[3]).toBe(7);
+    expect(newKey[0]).toBe(0x00);
+    expect(newKey[3]).toBe(0x03);
 
   });
 
   it('should return a round constant value', function () {
 
 
-    var rcon = aes.roundCon(1);
+    var rcon = aes.roundCon(0);
 
     expect(rcon[0]).toBe(0x01);
     expect(rcon[1]).toBe(0x00);
     expect(rcon[2]).toBe(0x00);
     expect(rcon[3]).toBe(0x00);
+
+  });
+
+  it('should properly xor two words', function () {
+
+    var word1 = [1, 2, 3, 1];
+    var word2 = [1, 2, 3, 2];
+
+    var newWord = aes.xorWords(word1, word2);
+
+    expect(newWord[0]).toBe(0x00);
+    expect(newWord[1]).toBe(0x00);
+    expect(newWord[2]).toBe(0x00);
+    expect(newWord[3]).toBe(0x03);
+
+  });
+
+  it('should return an array of hex values', function () {
+
+    var a = [0, 5, 10, 16];
+
+    var output = aes.arrayToHex(a);
+
+    expect(output[0]).toBe('0');
+    expect(output[1]).toBe('5');
+    expect(output[2]).toBe('a');
+    expect(output[3]).toBe('10');
+
+  });
+
+  it('should expand a key', function () {
+
+    var key = [
+      0x54,0x68,0x61,0x74,
+      0x73,0x20,0x6D,0x79,
+      0x20,0x4B,0x75,0x6E,
+      0x67,0x20,0x46,0x75
+    ];
+
+    var newKey = aes.expandKey(key);
+
+    expect(newKey[0]).toBe(0x54);
+    expect(newKey[15]).toBe(0x75);
+    expect(newKey[16]).toBe(0xe2);
+    expect(newKey[175]).toBe(0x26);
 
   });
 
