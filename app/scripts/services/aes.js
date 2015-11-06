@@ -170,6 +170,32 @@ angular.module('aesApp.services', [])
         return state;
       },
 
+      decrypt : function(message, key) {
+        var round, roundSize = 10;
+        var state;
+
+        // generate an expanded key
+        var expKey = this.expandKey(key);
+
+        // create state and add initial round key before starting rounds
+        state = this.addRoundKey(this.arrayToState(message), this.getRoundKey(expKey,-1,true));
+
+        // perform all four encryption steps in the rounds
+        for (round=0; round<roundSize-1; round++) {
+          state = this.shiftRows(state, true);
+          state = this.substitutionBox(state,true);
+          state = this.addRoundKey(state, this.getRoundKey(expKey,round,true));
+          state = this.mixState(state,true,round===3);
+        }
+
+        // perform final round step without mixing columns
+        state = this.shiftRows(state, true);
+        state = this.substitutionBox(state,true);
+        state = this.addRoundKey(state, this.getRoundKey(expKey,round,true));
+
+        return this.arrayToHex(this.stateToArray(state));
+      },
+
       // encrypt function
       // this is the key driver function that encrypts a message based on a key
       // currently limited to 16-byte (128-bit) key and message (AES-128)
@@ -181,20 +207,20 @@ angular.module('aesApp.services', [])
         var expKey = this.expandKey(key);
 
         // create state and add initial round key before starting rounds
-        state = this.addRoundKey(this.arrayToState(message), this.getRoundKey(expKey,-1));
+        state = this.addRoundKey(this.arrayToState(message), this.getRoundKey(expKey,-1,false));
 
         // perform all four encryption steps in the rounds
         for (round=0; round<roundSize-1; round++) {
           state = this.substitutionBox(state,false);
           state = this.shiftRows(state, false);
           state = this.mixState(state,false);
-          state = this.addRoundKey(state, this.getRoundKey(expKey,round));
+          state = this.addRoundKey(state, this.getRoundKey(expKey,round,false));
         }
 
         // perform final round step without mixing columns
         state = this.substitutionBox(state,false);
         state = this.shiftRows(state, false);
-        state = this.addRoundKey(state, this.getRoundKey(expKey,round));
+        state = this.addRoundKey(state, this.getRoundKey(expKey,round,false));
 
         return this.arrayToHex(this.stateToArray(state));
       },
@@ -228,8 +254,14 @@ angular.module('aesApp.services', [])
       // getRoundKey function
       // return a 16-byte round key when provided an expanded key and round number
       // round = -1 for the initial round
-      getRoundKey : function(expKey, round) {
-        var offset = (round+1) * 16;
+      // bReverse parameer determines direction
+      getRoundKey : function(expKey, round, bReverse) {
+        var offset;
+        if (bReverse) {
+          offset = expKey.length - ((round+1) * 16) - 16;
+        } else {
+          offset = (round+1) * 16;
+        }
         return expKey.slice(offset, offset+16);
       },
 
@@ -274,7 +306,10 @@ angular.module('aesApp.services', [])
         for (row=0; row < 4; row++) {
           // iterate over each column value during calculation
           for (i=0; i < 4; i++) {
-
+            if (stateCol[i] === 0) {
+              //if 0 there is no need to calculate
+              t[i] = 0x00;
+            } else {
               val = lTable[stateCol[i]] + lTable[matrix[row][i]];
               // need to keep val within two-digit hex bound
               if (val > 0xFF) {
@@ -282,9 +317,8 @@ angular.module('aesApp.services', [])
               } else {
                 t[i] = eTable[val];
               }
-
+            }
           }
-
           /*jslint bitwise: true */
           newCol[row] = t[0] ^ t[1] ^ t[2] ^ t[3];
 
