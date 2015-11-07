@@ -47,4 +47,41 @@ describe('Service: convert', function () {
 
   });
 
+  it('should convert a string containing hex to a decimal array', function() {
+
+    var s = '000102030405060708090a';
+
+    var output = convert.hexToArray(s);
+
+    expect(output[0]).toBe(0);
+    expect(output[10]).toBe(10);
+
+    s = '00 01 02 03 04 05 06 07 08 09 0a';
+
+    output = convert.hexToArray(s);
+
+    expect(output[0]).toBe(0);
+    expect(output[10]).toBe(10);
+
+    s = '00010203040506070809f';
+
+    output = convert.hexToArray(s);
+
+    expect(output[0]).toBe(0);
+    expect(output[10]).toBe(15);
+
+    s = 'BADHEX';
+
+    output = convert.hexToArray(s);
+
+    expect(output[0]).toBeUndefined();
+
+    s = '';
+
+    output = convert.hexToArray(s);
+
+    expect(output[0]).toBeUndefined();
+
+  });
+
 });
