@@ -8,8 +8,8 @@
  * Store all of the AES algorithm functions
  */
 
-angular.module('aesApp.services', [])
-  .factory('aes', function() {
+angular.module('aesApp')
+  .factory('aes', [function() {
 
     // Define substitution tables
 
@@ -128,10 +128,6 @@ angular.module('aesApp.services', [])
 
     var _pub = {
 
-      foo : function() {
-        return 1;
-      },
-
       // add round key function
       addRoundKey : function(state, key) {
         var row, col;
@@ -145,18 +141,8 @@ angular.module('aesApp.services', [])
         return state;
       },
 
-      // arrayToHex helper function
-      // converts an array of decimal numbers to an array of hex string values for display
-      arrayToHex : function(a) {
-        var t = [];
-        var aLength = a.length;
-
-        for (var i=0; i<aLength; i++) {
-          t[i] = a[i].toString(16);
-        }
-        return t;
-      },
-
+      // arrayToState function
+      // convert a one-dimensional array to a state matrix
       arrayToState : function(message) {
         var row, col;
         var state = [[],[],[],[]];
@@ -170,6 +156,8 @@ angular.module('aesApp.services', [])
         return state;
       },
 
+      // decrypt function
+      // decrypt a message given a key
       decrypt : function(message, key) {
         var round, roundSize = 10;
         var state;
@@ -193,7 +181,7 @@ angular.module('aesApp.services', [])
         state = this.substitutionBox(state,true);
         state = this.addRoundKey(state, this.getRoundKey(expKey,round,true));
 
-        return this.arrayToHex(this.stateToArray(state));
+        return this.stateToArray(state);
       },
 
       // encrypt function
@@ -222,7 +210,7 @@ angular.module('aesApp.services', [])
         state = this.shiftRows(state, false);
         state = this.addRoundKey(state, this.getRoundKey(expKey,round,false));
 
-        return this.arrayToHex(this.stateToArray(state));
+        return this.stateToArray(state);
       },
 
       // key expansion function
@@ -324,6 +312,32 @@ angular.module('aesApp.services', [])
 
         }
         return newCol;
+      },
+
+      // parseKey function
+      // take an array as input and convert into properly sized key
+      // accept 128 bit (16 byte), 192 bit (24byte), and 256 bit (32byte) keys
+      // size param determines key size, pad with 0's if necessary
+      parseKey : function(key, size) {
+        var i, padding = 0;
+        var keyLength = key.length;
+
+        // truncate key if longer than specified size
+        if (keyLength > size) {
+          key = key.slice(0,size);
+          keyLength = size;
+        } else {
+          // calculate amount of padding
+          padding = size - keyLength;
+          // add padding if necessary
+          if (padding) {
+            for (i=0; i< padding; i++) {
+              key.push(0);
+            }
+          }
+        }
+
+        return key;
       },
 
       // Rcon function
@@ -430,4 +444,4 @@ angular.module('aesApp.services', [])
     };
 
     return _pub;
-  });
+  }]);

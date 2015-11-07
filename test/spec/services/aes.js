@@ -7,11 +7,13 @@ describe('Service: aes', function () {
 
   var $rootScope,
     scope,
-    aes;
+    aes,
+    convert;
 
-  beforeEach(inject(function (_$rootScope_, _aes_) {
+  beforeEach(inject(function (_$rootScope_, _aes_, _convert_) {
     $rootScope = _$rootScope_;
     aes = _aes_;
+    convert = _convert_;
     scope = $rootScope.$new();
 
   }));
@@ -296,19 +298,6 @@ describe('Service: aes', function () {
 
   });
 
-  it('should return an array of hex values', function () {
-
-    var a = [0, 5, 10, 16];
-
-    var output = aes.arrayToHex(a);
-
-    expect(output[0]).toBe('0');
-    expect(output[1]).toBe('5');
-    expect(output[2]).toBe('a');
-    expect(output[3]).toBe('10');
-
-  });
-
   it('should expand a key', function () {
 
     var key = [
@@ -428,7 +417,7 @@ describe('Service: aes', function () {
     var key = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
       0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F];
 
-    var cipherText = aes.encrypt(message, key);
+    var cipherText = convert.arrayToHex(aes.encrypt(message, key));
 
     expect(cipherText[0]).toBe('69');
     expect(cipherText[1]).toBe('c4');
@@ -458,7 +447,7 @@ describe('Service: aes', function () {
     var key = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
       0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F];
 
-    var plaintext = aes.decrypt(message, key);
+    var plaintext = convert.arrayToHex(aes.decrypt(message, key));
 
     expect(plaintext[0]).toBe('0');
     expect(plaintext[1]).toBe('11');
@@ -477,6 +466,48 @@ describe('Service: aes', function () {
     expect(plaintext[14]).toBe('ee');
     expect(plaintext[15]).toBe('ff');
 
+  });
+
+  it('should be able to parse a 128-bit ASCII key', function () {
+
+    var key = convert.stringToArray('This is a key');
+
+    var newKey = aes.parseKey(key, 16);
+
+    expect(newKey[0]).toBe(84);
+    expect(newKey[15]).toBe(0);
+    expect(newKey[16]).toBeUndefined();
+  });
+
+  it('should be able to parse a 192-bit ASCII key', function () {
+
+    var key = convert.stringToArray('This is a longer key');
+
+    var newKey = aes.parseKey(key, 24);
+
+    expect(newKey[0]).toBe(84);
+    expect(newKey[23]).toBe(0);
+    expect(newKey[24]).toBeUndefined();
+  });
+
+  it('should be able to parse a 256-bit ASCII key', function () {
+
+    var key = convert.stringToArray('This is a much much longer key');
+
+    var newKey = aes.parseKey(key, 32);
+    expect(newKey[0]).toBe(84);
+    expect(newKey[31]).toBe(0);
+    expect(newKey[32]).toBeUndefined();
+  });
+
+  it('should properly truncate an ASCII key', function () {
+
+    var key = convert.stringToArray('This key is way too long');
+
+    var newKey = aes.parseKey(key, 16);
+    expect(newKey[0]).toBe(84);
+    expect(newKey[15]).toBe(32);
+    expect(newKey[16]).toBeUndefined();
   });
 
 });
