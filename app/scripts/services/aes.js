@@ -238,8 +238,10 @@ angular.module('aesApp')
           // copy words from existing key to new key during initial rounds
           if (round < keyLength/4) {
             expKey = expKey.concat(this.keyOffset(key, round*4));
+          } else if (keyLength === 32 && (round-12)%8 === 0) {
+            expKey = expKey.concat(this.xorWords( this.subWord(this.keyOffset(expKey, (round-1)*4)), this.keyOffset(expKey, (round-(keyLength/4))*4)));
           } else if (round%(keyLength/4) === 0){
-            //perform complete set of steps every 4th round
+            //perform complete set of steps every nth round
             // this complex looking statement performs the following calculation:
             // Sub Word(Rot Word(EK((round-1)*4))) XOR Rcon((round/4)-1) XOR EK((round-4)*4)
             expKey = expKey.concat(this.xorWords( this.xorWords( this.subWord(this.rotWord(this.keyOffset(expKey, (round-1)*4))), this.roundCon((round/(keyLength/4))-1)), this.keyOffset(expKey, (round-(keyLength/4))*4)));

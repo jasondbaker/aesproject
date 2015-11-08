@@ -322,6 +322,7 @@ describe('Service: aes', function () {
 
     expect(newKey[0]).toBe(0x2b);
     expect(newKey[175]).toBe(0xa6);
+    expect(newKey.length).toBe(176);
 
   });
 
@@ -339,6 +340,23 @@ describe('Service: aes', function () {
     expect(newKey[0]).toBe(0x00);
     expect(newKey[207]).toBe(0x5d);
     expect(newKey.length).toBe(208);
+
+  });
+
+  it('should expand a 256-bit key', function () {
+
+
+    // official NIST 192-bit cipher key expansion test (FIPS-197)
+    var key = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
+          0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
+          0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f
+     ];
+
+    var newKey = aes.expandKey(key);
+
+    expect(newKey[0]).toBe(0x00);
+    expect(newKey[239]).toBe(0x36);
+    expect(newKey.length).toBe(240);
 
   });
 
@@ -486,6 +504,37 @@ describe('Service: aes', function () {
 
   });
 
+  it('should be able to encrypt a message with a 256-bit key', function () {
+
+    // official NIST AES-256 test (FIPS-197)
+    var message = [0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+       0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF];
+
+    var key = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+      0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13,
+      0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f];
+
+    var cipherText = convert.arrayToHex(aes.encrypt(message, key));
+
+    expect(cipherText[0]).toBe('8e');
+    expect(cipherText[1]).toBe('a2');
+    expect(cipherText[2]).toBe('b7');
+    expect(cipherText[3]).toBe('ca');
+    expect(cipherText[4]).toBe('51');
+    expect(cipherText[5]).toBe('67');
+    expect(cipherText[6]).toBe('45');
+    expect(cipherText[7]).toBe('bf');
+    expect(cipherText[8]).toBe('ea');
+    expect(cipherText[9]).toBe('fc');
+    expect(cipherText[10]).toBe('49');
+    expect(cipherText[11]).toBe('90');
+    expect(cipherText[12]).toBe('4b');
+    expect(cipherText[13]).toBe('49');
+    expect(cipherText[14]).toBe('60');
+    expect(cipherText[15]).toBe('89');
+
+  });
+
   it('should be able to decrypt a message using a 128-bit key', function () {
 
     // official NIST AES-128 test (FIPS-197)
@@ -525,6 +574,37 @@ describe('Service: aes', function () {
     var key = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
        0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13,
        0x14, 0x15, 0x16, 0x17];
+
+    var plaintext = convert.arrayToHex(aes.decrypt(message, key));
+
+    expect(plaintext[0]).toBe('0');
+    expect(plaintext[1]).toBe('11');
+    expect(plaintext[2]).toBe('22');
+    expect(plaintext[3]).toBe('33');
+    expect(plaintext[4]).toBe('44');
+    expect(plaintext[5]).toBe('55');
+    expect(plaintext[6]).toBe('66');
+    expect(plaintext[7]).toBe('77');
+    expect(plaintext[8]).toBe('88');
+    expect(plaintext[9]).toBe('99');
+    expect(plaintext[10]).toBe('aa');
+    expect(plaintext[11]).toBe('bb');
+    expect(plaintext[12]).toBe('cc');
+    expect(plaintext[13]).toBe('dd');
+    expect(plaintext[14]).toBe('ee');
+    expect(plaintext[15]).toBe('ff');
+
+  });
+
+  it('should be able to decrypt a message using a 256-bit key', function () {
+
+    // official NIST AES-256 test (FIPS-197)
+    var message = [0x8e, 0xa2, 0xb7, 0xca, 0x51, 0x67, 0x45, 0xbf,
+       0xea, 0xfc, 0x49, 0x90, 0x4b, 0x49, 0x60, 0x89];
+
+    var key = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+     0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13,
+     0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f];
 
     var plaintext = convert.arrayToHex(aes.decrypt(message, key));
 
