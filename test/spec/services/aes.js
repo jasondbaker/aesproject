@@ -284,20 +284,6 @@ describe('Service: aes', function () {
 
   });
 
-  it('should properly xor two words', function () {
-
-    var word1 = [1, 2, 3, 1];
-    var word2 = [1, 2, 3, 2];
-
-    var newWord = aes.xorWords(word1, word2);
-
-    expect(newWord[0]).toBe(0x00);
-    expect(newWord[1]).toBe(0x00);
-    expect(newWord[2]).toBe(0x00);
-    expect(newWord[3]).toBe(0x03);
-
-  });
-
   it('should expand a 128-bit key', function () {
 
     var key = [
@@ -408,39 +394,6 @@ describe('Service: aes', function () {
     expect(roundKey[0]).toBe(0);
     expect(roundKey[15]).toBe(15);
 
-  });
-
-  it('should transform a state to a one dimensional array', function () {
-
-    var state = [
-                  [1,5,9,13],
-                  [2,6,10,14],
-                  [3,7,11,15],
-                  [4,8,12,16]
-                ];
-
-    var t = aes.stateToArray(state);
-
-    expect(t[0]).toBe(1);
-    expect(t[10]).toBe(11);
-    expect(t[15]).toBe(16);
-
-  });
-
-  it('should transform an array to a state matrix', function () {
-
-    var message = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-
-    var state = aes.arrayToState(message);
-
-    expect(state[0][0]).toBe(0);
-    expect(state[1][0]).toBe(1);
-    expect(state[2][0]).toBe(2);
-    expect(state[3][0]).toBe(3);
-    expect(state[0][1]).toBe(4);
-    expect(state[0][2]).toBe(8);
-    expect(state[0][3]).toBe(12);
-    expect(state[3][3]).toBe(15);
   });
 
   it('should be able to encrypt a message with a 128-bit key', function () {

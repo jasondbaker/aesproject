@@ -123,23 +123,8 @@ angular.module('aesApp')
       [0x9A, 0x00, 0x00, 0x00]
     ];
 
-    // Service logic
-    // ...
-
-    var _pub = {
-
-      // add round key function
-      addRoundKey : function(state, key) {
-        var row, col;
-
-        for (col=0; col<4; col++) {
-          for (row=0; row<4; row++) {
-            /*jslint bitwise: true */
-            state[row][col] = state[row][col] ^ key[(col*4)+row];
-          }
-        }
-        return state;
-      },
+    // private functions
+    var _private = {
 
       // arrayToState function
       // convert a one-dimensional array to a state matrix
@@ -151,6 +136,51 @@ angular.module('aesApp')
         for (col=0; col<4; col++) {
           for (row=0; row<4; row++) {
             state[row].push(message[(col*4)+row]);
+          }
+        }
+        return state;
+      },
+
+      // stateToArray helper function
+      // transform 4x4 state matrix to one dimensional array
+      stateToArray : function(state) {
+        var row, col;
+        var t = [];
+
+        // iterate over state matrix by rows and then columns
+        for (col=0; col<4; col++) {
+          for (row=0; row<4; row++) {
+            t.push(state[row][col]);
+          }
+        }
+        return t;
+      },
+
+      // xor words function
+      // helper function for key expansion process
+      // xor two 4-byte words
+      xorWords : function(word1, word2) {
+        var t = []; //temp array to hold xor'ed result
+        for (var i=0; i<4; i++) {
+          /*jslint bitwise: true */
+          t[i] = word1[i] ^ word2[i];
+        }
+        return t;
+      }
+
+    }
+
+    // public functions
+    var _pub = {
+
+      // add round key function
+      addRoundKey : function(state, key) {
+        var row, col;
+
+        for (col=0; col<4; col++) {
+          for (row=0; row<4; row++) {
+            /*jslint bitwise: true */
+            state[row][col] = state[row][col] ^ key[(col*4)+row];
           }
         }
         return state;
@@ -171,7 +201,7 @@ angular.module('aesApp')
         var expKey = this.expandKey(key);
 
         // create state and add initial round key before starting rounds
-        state = this.addRoundKey(this.arrayToState(message), this.getRoundKey(expKey,-1,true));
+        state = this.addRoundKey(_private.arrayToState(message), this.getRoundKey(expKey,-1,true));
         // perform all four encryption steps in the rounds
         for (round=0; round<roundSize-1; round++) {
           state = this.shiftRows(state, true);
@@ -184,7 +214,7 @@ angular.module('aesApp')
         state = this.shiftRows(state, true);
         state = this.substitutionBox(state,true);
         state = this.addRoundKey(state, this.getRoundKey(expKey,round,true));
-        return this.stateToArray(state);
+        return _private.stateToArray(state);
       },
 
       // encrypt function
@@ -203,7 +233,7 @@ angular.module('aesApp')
         var expKey = this.expandKey(key);
 
         // create state and add initial round key before starting rounds
-        state = this.addRoundKey(this.arrayToState(message), this.getRoundKey(expKey,-1,false));
+        state = this.addRoundKey(_private.arrayToState(message), this.getRoundKey(expKey,-1,false));
 
         // perform all four encryption steps in the rounds
         for (round=0; round<roundSize-1; round++) {
@@ -218,7 +248,7 @@ angular.module('aesApp')
         state = this.shiftRows(state, false);
         state = this.addRoundKey(state, this.getRoundKey(expKey,round,false));
 
-        return this.stateToArray(state);
+        return _private.stateToArray(state);
       },
 
       // key expansion function
@@ -239,16 +269,16 @@ angular.module('aesApp')
           if (round < keyLength/4) {
             expKey = expKey.concat(this.keyOffset(key, round*4));
           } else if (keyLength === 32 && (round-12)%8 === 0) {
-            expKey = expKey.concat(this.xorWords( this.subWord(this.keyOffset(expKey, (round-1)*4)), this.keyOffset(expKey, (round-(keyLength/4))*4)));
+            expKey = expKey.concat(_private.xorWords( this.subWord(this.keyOffset(expKey, (round-1)*4)), this.keyOffset(expKey, (round-(keyLength/4))*4)));
           } else if (round%(keyLength/4) === 0){
             //perform complete set of steps every nth round
             // this complex looking statement performs the following calculation:
             // Sub Word(Rot Word(EK((round-1)*4))) XOR Rcon((round/4)-1) XOR EK((round-4)*4)
-            expKey = expKey.concat(this.xorWords( this.xorWords( this.subWord(this.rotWord(this.keyOffset(expKey, (round-1)*4))), this.roundCon((round/(keyLength/4))-1)), this.keyOffset(expKey, (round-(keyLength/4))*4)));
+            expKey = expKey.concat(_private.xorWords( _private.xorWords( this.subWord(this.rotWord(this.keyOffset(expKey, (round-1)*4))), this.roundCon((round/(keyLength/4))-1)), this.keyOffset(expKey, (round-(keyLength/4))*4)));
           } else {
             //simple XOR every other round
             //EK((round-1)*4)XOR EK((round-4)*4)
-            expKey = expKey.concat( this.xorWords( this.keyOffset(expKey,(round-1)*4), this.keyOffset(expKey,(round-(keyLength/4))*4)));
+            expKey = expKey.concat( _private.xorWords( this.keyOffset(expKey,(round-1)*4), this.keyOffset(expKey,(round-(keyLength/4))*4)));
           }
         }
         return expKey;
@@ -401,21 +431,6 @@ angular.module('aesApp')
 
       },
 
-      // stateToArray helper function
-      // transform 4x4 state matrix to one dimensional array
-      stateToArray : function(state) {
-        var row, col;
-        var t = [];
-
-        // iterate over state matrix by rows and then columns
-        for (col=0; col<4; col++) {
-          for (row=0; row<4; row++) {
-            t.push(state[row][col]);
-          }
-        }
-        return t;
-      },
-
       // substitution box function
       // replace state element with value in substitution box
       // reverse param determines which sbox is used
@@ -442,18 +457,6 @@ angular.module('aesApp')
           word[i] = box[word[i]];
         }
         return word;
-      },
-
-      // xor words function
-      // helper function for key expansion process
-      // xor two 4-byte words
-      xorWords : function(word1, word2) {
-        var t = []; //temp array to hold xor'ed result
-        for (var i=0; i<4; i++) {
-          /*jslint bitwise: true */
-          t[i] = word1[i] ^ word2[i];
-        }
-        return t;
       }
 
     };
