@@ -9,7 +9,7 @@
  */
 
 angular.module('aesApp')
-  .factory('aes', [function() {
+  .factory('aes', ['convert', function(convert) {
 
     // Define substitution tables
 
@@ -159,28 +159,31 @@ angular.module('aesApp')
       // decrypt function
       // decrypt a message given a key
       decrypt : function(message, key) {
-        var round, roundSize = 10;
+        var round, roundSize;
         var state;
+        var keyLength = key.length;
+
+        if (keyLength === 16) { roundSize = 10;}
+        if (keyLength === 24) { roundSize = 12;}
+        if (keyLength === 32) { roundSize = 14;}
 
         // generate an expanded key
         var expKey = this.expandKey(key);
 
         // create state and add initial round key before starting rounds
         state = this.addRoundKey(this.arrayToState(message), this.getRoundKey(expKey,-1,true));
-
         // perform all four encryption steps in the rounds
         for (round=0; round<roundSize-1; round++) {
           state = this.shiftRows(state, true);
           state = this.substitutionBox(state,true);
           state = this.addRoundKey(state, this.getRoundKey(expKey,round,true));
-          state = this.mixState(state,true,round===3);
+          state = this.mixState(state,true);
         }
 
         // perform final round step without mixing columns
         state = this.shiftRows(state, true);
         state = this.substitutionBox(state,true);
         state = this.addRoundKey(state, this.getRoundKey(expKey,round,true));
-
         return this.stateToArray(state);
       },
 
@@ -188,8 +191,13 @@ angular.module('aesApp')
       // this is the key driver function that encrypts a message based on a key
       // currently limited to 16-byte (128-bit) key and message (AES-128)
       encrypt : function(message, key) {
-        var round, roundSize = 10;
+        var round, roundSize;
         var state;
+        var keyLength = key.length;
+
+        if (keyLength === 16) { roundSize = 10;}
+        if (keyLength === 24) { roundSize = 12;}
+        if (keyLength === 32) { roundSize = 14;}
 
         // generate an expanded key
         var expKey = this.expandKey(key);
@@ -214,26 +222,31 @@ angular.module('aesApp')
       },
 
       // key expansion function
-      expandKey : function(key) {
-        var x;
+      // expands a provided key based on the specified size
+      // size options: 16 (128bit), 24 (192bit), 32 (256bit)
+      expandKey : function(key, size) {
+        var x, maxRounds;
         var expKey = []; //newly expanded key
+        var keyLength = key.length;
 
         // each round adds a 4-byte word to the expanded key
-        if (key.length === 16) { x = 10;}
-        var maxRounds = (key.length * (x + 1))/4;
+        if (keyLength === 16) { maxRounds = 44;}
+        if (keyLength === 24) { maxRounds = 52;}
+        if (keyLength === 32) { maxRounds = 60;}
+
         for (var round=0; round < maxRounds; round++) {
-          // copy words from existing key to new key during first 4 rounds
-          if (round < 4) {
+          // copy words from existing key to new key during initial rounds
+          if (round < keyLength/4) {
             expKey = expKey.concat(this.keyOffset(key, round*4));
-          } else if (round%4 === 0){
+          } else if (round%(keyLength/4) === 0){
             //perform complete set of steps every 4th round
             // this complex looking statement performs the following calculation:
             // Sub Word(Rot Word(EK((round-1)*4))) XOR Rcon((round/4)-1) XOR EK((round-4)*4)
-            expKey = expKey.concat(this.xorWords( this.xorWords( this.subWord(this.rotWord(this.keyOffset(expKey, (round-1)*4))), this.roundCon((round/4)-1)), this.keyOffset(expKey, (round-4)*4)));
+            expKey = expKey.concat(this.xorWords( this.xorWords( this.subWord(this.rotWord(this.keyOffset(expKey, (round-1)*4))), this.roundCon((round/(keyLength/4))-1)), this.keyOffset(expKey, (round-(keyLength/4))*4)));
           } else {
             //simple XOR every other round
             //EK((round-1)*4)XOR EK((round-4)*4)
-            expKey = expKey.concat( this.xorWords( this.keyOffset(expKey,(round-1)*4), this.keyOffset(expKey,(round-4)*4)));
+            expKey = expKey.concat( this.xorWords( this.keyOffset(expKey,(round-1)*4), this.keyOffset(expKey,(round-(keyLength/4))*4)));
           }
         }
         return expKey;
@@ -430,7 +443,7 @@ angular.module('aesApp')
       },
 
       // xor words function
-      // helper function for key explansion process
+      // helper function for key expansion process
       // xor two 4-byte words
       xorWords : function(word1, word2) {
         var t = []; //temp array to hold xor'ed result
