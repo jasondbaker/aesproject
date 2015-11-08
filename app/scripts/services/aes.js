@@ -224,7 +224,6 @@ angular.module('aesApp')
         var round, roundSize;
         var state;
         var keyLength = key.length;
-
         if (keyLength === 16) { roundSize = 10;}
         if (keyLength === 24) { roundSize = 12;}
         if (keyLength === 32) { roundSize = 14;}

@@ -22,6 +22,26 @@ describe('Service: convert', function () {
 
   });
 
+  it('should be able to convert an array to a hex string', function () {
+
+    var key = [0x00, 0x01, 0x1a, 0xFF];
+
+    var s = convert.arrayToHexString(key);
+
+    expect(s).toBe('00011aff');
+
+  });
+
+  it('should be able to convert an array to a hex string with spaces', function () {
+
+    var key = [0x00, 0x01, 0x1a, 0xFF];
+
+    var s = convert.arrayToHexString(key,true);
+
+    expect(s).toBe('00 01 1a ff');
+
+  });
+
   it('should be able to convert a string to a decimal array', function () {
 
     var s = 'This is a key000';

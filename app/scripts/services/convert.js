@@ -40,6 +40,23 @@ angular.module('aesApp')
         return s;
       },
 
+      // arrayToHexString
+      // converts an array of numbers to a hex string for display
+      // bWithSpaces can be set to add a space between hex values
+      // code derived from crypto-js (https://code.google.com/archive/p/crypto-js/)
+      arrayToHexString: function (a, bWithSpaces) {
+        var s = [];
+
+        for (var i=0; i<a.length; i++) {
+          /*jslint bitwise: true */
+          s.push((a[i] >>> 4).toString(16));
+          /*jslint bitwise: true */
+          s.push((a[i] & 0xF).toString(16));
+          if (bWithSpaces) { s.push(' ');}
+        }
+        return s.join('').trim();
+      },
+
       // hexToArray helper
       // converts a string containing hex to a decimal array
       // a string with non-hex characters returns an empty array

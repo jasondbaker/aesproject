@@ -1,9 +1,50 @@
 <div class="jumbotron">
   <h2>AES Algorithm Inputs</h2>
 
-  Plaintext: <input type="text" value="{{message}}">
-  Message: {{message}}
-  <br>
+  <table>
+  <tr>
+    <td> </td>
+    <td>
+      <div>
+        Encryption:
+      </div>
+      <form name="encryptForm">
+        <div class="form-group">
+          <label for="plaintext">Plaintext</label>
+          <input class="form-control"
+          ng-model="encryption.plaintext"
+          maxlength="16"
+          type="text"
+          value="{{encryption.plaintext}}"
+          placeholder="Enter text to encrypt..."
+          required>
+        </div>
+        <div class="form-group">
+          <label for="key">Key</label>
+          <input class="form-control"
+          ng-model="encryption.key"
+          maxlength="32" type="text"
+          value="{{encryption.key}}"
+          placeholder="Enter an encryption key"
+          required>
+        </div>
+
+        <div class="form-group" ng-show="encryption.ciphertext">
+          <label for="ciphertext">Ciphertext</label>
+          <input class="form-control"
+          type="text"
+          ng-model="encryption.ciphertext"
+          value="{{encryption.ciphertext}}"
+          ng-disabled="true">
+        </div>
+
+        <button class="btn btn-default" type="button" ng-click="encrypt(encryption.plaintext,encryption.key)" ng-disabled="encryptForm.$invalid">Encrypt</button>
+        <button class="btn btn-default" type="button" ng-click="clearEncrypt()" ng-disabled="!encryptForm.$dirty">Clear</button>
+      </form>
+    </td>
+  </tr>
+  </table>
+
 
 </div>
 
