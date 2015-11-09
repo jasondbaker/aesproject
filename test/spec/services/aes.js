@@ -405,7 +405,7 @@ describe('Service: aes', function () {
     var key = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
       0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F];
 
-    var cipherText = convert.arrayToHex(aes.encrypt(message, key));
+    var cipherText = convert.arrayToHex(aes.encrypt(message, key).ciphertext);
 
     expect(cipherText[0]).toBe('69');
     expect(cipherText[1]).toBe('c4');
@@ -436,7 +436,7 @@ describe('Service: aes', function () {
       0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13,
       0x14, 0x15, 0x16, 0x17];
 
-    var cipherText = convert.arrayToHex(aes.encrypt(message, key));
+    var cipherText = convert.arrayToHex(aes.encrypt(message, key).ciphertext);
 
     expect(cipherText[0]).toBe('dd');
     expect(cipherText[1]).toBe('a9');
@@ -467,7 +467,7 @@ describe('Service: aes', function () {
       0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13,
       0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f];
 
-    var cipherText = convert.arrayToHex(aes.encrypt(message, key));
+    var cipherText = convert.arrayToHex(aes.encrypt(message, key).ciphertext);
 
     expect(cipherText[0]).toBe('8e');
     expect(cipherText[1]).toBe('a2');
@@ -584,7 +584,7 @@ describe('Service: aes', function () {
 
     var key = convert.stringToArray('This is a key');
 
-    var newKey = aes.parseKey(key, 16);
+    var newKey = aes.parseKey(key, 16).key;
 
     expect(newKey[0]).toBe(84);
     expect(newKey[15]).toBe(0);
@@ -595,7 +595,7 @@ describe('Service: aes', function () {
 
     var key = convert.stringToArray('This is a longer key');
 
-    var newKey = aes.parseKey(key, 24);
+    var newKey = aes.parseKey(key, 24).key;
 
     expect(newKey[0]).toBe(84);
     expect(newKey[23]).toBe(0);
@@ -606,7 +606,7 @@ describe('Service: aes', function () {
 
     var key = convert.stringToArray('This is a much much longer key');
 
-    var newKey = aes.parseKey(key, 32);
+    var newKey = aes.parseKey(key, 32).key;
     expect(newKey[0]).toBe(84);
     expect(newKey[31]).toBe(0);
     expect(newKey[32]).toBeUndefined();
@@ -616,7 +616,7 @@ describe('Service: aes', function () {
 
     var key = convert.stringToArray('This key is way too long');
 
-    var newKey = aes.parseKey(key, 16);
+    var newKey = aes.parseKey(key, 16).key;
     expect(newKey[0]).toBe(84);
     expect(newKey[15]).toBe(32);
     expect(newKey[16]).toBeUndefined();

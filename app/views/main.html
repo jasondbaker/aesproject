@@ -58,11 +58,23 @@
     <div class="form-group" ng-show="encryption.ciphertext.value">
       <label class="col-sm-2 control-label" for="ciphertext">Ciphertext</label>
       <div class="col-sm-8">
+        {{encryption.key.size*8}}-bit Key
+        <span ng-show="encryption.key.padding">{{encryption.key.padding*8}}-bits key padding</span>
+        <span ng-show="!encryption.key.padding">No key padding</span>
         <input class="form-control encrypted"
         type="text"
         ng-model="encryption.ciphertext.value"
         value="{{encryption.ciphertext.value}}"
         ng-disabled="true">
+        <div ng-repeat="log in encryption.result.log">
+          <table>
+            <tr>
+              <td>{{log.round}}</td>
+              <td>{{log.description}}</td>
+              <td>{{log.state}}</td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
 

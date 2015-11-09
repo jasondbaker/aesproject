@@ -146,10 +146,10 @@ angular.module('aesApp')
       stateToArray : function(state) {
         var row, col;
         var t = [];
-
         // iterate over state matrix by rows and then columns
         for (col=0; col<4; col++) {
           for (row=0; row<4; row++) {
+            //console.log('row=',row,' col=',col, 'stateVal=',state[row][col]);
             t.push(state[row][col]);
           }
         }
@@ -224,30 +224,58 @@ angular.module('aesApp')
         var round, roundSize;
         var state;
         var keyLength = key.length;
+        var log = [];
+
+        //set number of encryption rounds based on key length
         if (keyLength === 16) { roundSize = 10;}
         if (keyLength === 24) { roundSize = 12;}
         if (keyLength === 32) { roundSize = 14;}
 
         // generate an expanded key
         var expKey = this.expandKey(key);
+        log.push({
+            round : undefined,
+            description : 'Generating expanded key',
+            state : undefined
+        })
 
         // create state and add initial round key before starting rounds
         state = this.addRoundKey(_private.arrayToState(message), this.getRoundKey(expKey,-1,false));
-
+        log.push({
+            round : 0,
+            description : 'Creating initial state',
+            state : _private.stateToArray(state)
+        })
         // perform all four encryption steps in the rounds
         for (round=0; round<roundSize-1; round++) {
           state = this.substitutionBox(state,false);
           state = this.shiftRows(state, false);
           state = this.mixState(state,false);
           state = this.addRoundKey(state, this.getRoundKey(expKey,round,false));
+          log.push({
+              round : round+1,
+              description : 'Executing encryption functions',
+              state : _private.stateToArray(state)
+          })
         }
 
         // perform final round step without mixing columns
         state = this.substitutionBox(state,false);
         state = this.shiftRows(state, false);
         state = this.addRoundKey(state, this.getRoundKey(expKey,round,false));
+        log.push({
+            round : round+1,
+            description : 'Final encryption result',
+            state : _private.stateToArray(state)
+        })
 
-        return _private.stateToArray(state);
+        return {
+          ciphertext : _private.stateToArray(state),
+          key : key,
+          keySize : keyLength,
+          expandedKey : expKey,
+          log : log
+        };
       },
 
       // key expansion function
@@ -381,7 +409,11 @@ angular.module('aesApp')
           }
         }
 
-        return key;
+        return {
+            key : key,
+            size : key.length,
+            padding : padding
+          };
       },
 
       // Rcon function

@@ -18,12 +18,14 @@ angular.module('aesApp')
       },
       key : {
         value : undefined,
-        type: 'ascii'
+        type: 'ascii',
+        padding: undefined
       },
       ciphertext : {
         value : undefined,
         type : 'hex'
-      }
+      },
+      result : undefined
     };
 
     $scope.encrypt = function(plaintext, key){
@@ -48,13 +50,19 @@ angular.module('aesApp')
       else {size = 32;}
 
       theKey = aes.parseKey(theKey,size);
-      $scope.encryption.ciphertext.value = convert.arrayToHexString(aes.encrypt(thePlaintext, theKey), true);
+      $scope.encryption.key.padding = theKey.padding;
+      $scope.encryption.key.size = size;
+
+      // encrypt input data
+      $scope.encryption.result = aes.encrypt(thePlaintext, theKey.key);
+      $scope.encryption.ciphertext.value = convert.arrayToHexString($scope.encryption.result.ciphertext, true);
     };
 
     $scope.clearEncrypt = function(){
       $scope.encryption.ciphertext.value = '';
       $scope.encryption.plaintext.value = '';
       $scope.encryption.key.value = '';
+      $scope.encryption.result = undefined;
     };
 
     // set the type of an input string to ascii or hex
