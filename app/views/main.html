@@ -1,57 +1,79 @@
 <div class="jumbotron">
-  <h2>AES Algorithm Inputs</h2>
+  <h4>AES Algorithm Encryption</h4>
 
-  <table>
-  <tr>
-    <td> </td>
-    <td>
-      <div>
-        Encryption:
-      </div>
-      <form name="encryptForm">
-        <div class="form-group">
-          <label for="plaintext">Plaintext</label>
+
+  <form class="form-horizontal" name="encryptForm">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="plaintext">Plaintext</label>
+        <div class="col-sm-8">
           <input class="form-control"
-          ng-model="encryption.plaintext"
+          ng-model="encryption.plaintext.value"
           maxlength="16"
           type="text"
-          value="{{encryption.plaintext}}"
-          placeholder="Enter text to encrypt..."
+          value="{{encryption.plaintext.value}}"
+          placeholder="Enter text to encrypt in {{encryption.plaintext.type}} format"
           required>
         </div>
-        <div class="form-group">
-          <label for="key">Key</label>
-          <input class="form-control"
-          ng-model="encryption.key"
-          maxlength="32" type="text"
-          value="{{encryption.key}}"
-          placeholder="Enter an encryption key"
-          required>
+        <div class="col-sm-2">
+          <button class="btn btn-default btn-sm"
+            type="button"
+            ng-click="setType('encryption','plaintext','ascii')"
+            ng-disabled="encryption.plaintext.type == 'ascii'">
+            <i class="fa fa-font"></i>
+          </button>
+          <button class="btn btn-default btn-sm"
+            type="button"
+            ng-click="setType('encryption','plaintext', 'hex')"
+            ng-disabled="encryption.plaintext.type == 'hex'">
+            <i class="fa fa-calculator"></i>
+          </button>
         </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="key">Key</label>
+      <div class="col-sm-8">
+        <input class="form-control"
+        ng-model="encryption.key.value"
+        maxlength="32" type="text"
+        value="{{encryption.key.value}}"
+        placeholder="Enter an encryption key in {{encryption.key.type}} format"
+        required>
+      </div>
+      <div class="col-sm-2">
+        <button class="btn btn-default btn-sm"
+          type="button"
+          ng-click="setType('encryption','key','ascii')"
+          ng-disabled="encryption.key.type == 'ascii'">
+          <i class="fa fa-font"></i>
+        </button>
+        <button class="btn btn-default btn-sm"
+          type="button"
+          ng-click="setType('encryption','key','hex')"
+          ng-disabled="encryption.key.type == 'hex'">
+          <i class="fa fa-calculator"></i>
+        </button>
+      </div>
+    </div>
 
-        <div class="form-group" ng-show="encryption.ciphertext">
-          <label for="ciphertext">Ciphertext</label>
-          <input class="form-control"
-          type="text"
-          ng-model="encryption.ciphertext"
-          value="{{encryption.ciphertext}}"
-          ng-disabled="true">
-        </div>
+    <div class="form-group" ng-show="encryption.ciphertext.value">
+      <label class="col-sm-2 control-label" for="ciphertext">Ciphertext</label>
+      <div class="col-sm-8">
+        <input class="form-control encrypted"
+        type="text"
+        ng-model="encryption.ciphertext.value"
+        value="{{encryption.ciphertext.value}}"
+        ng-disabled="true">
+      </div>
+    </div>
 
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-8">
         <button class="btn btn-default" type="button" ng-click="encrypt(encryption.plaintext,encryption.key)" ng-disabled="encryptForm.$invalid">Encrypt</button>
         <button class="btn btn-default" type="button" ng-click="clearEncrypt()" ng-disabled="!encryptForm.$dirty">Clear</button>
-      </form>
-    </td>
-  </tr>
-  </table>
+      </div>
+    </div>
+  </form>
 
 
-</div>
-
-<div class="row marketing">
-
-  <h4>Angular</h4>
-  <p>
-    The test value is.
 
 </div>

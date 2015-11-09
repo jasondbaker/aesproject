@@ -15,6 +15,10 @@ body {
   background-color: #BAB8BD;
 }
 
+.encrypted {
+  background-color: rgb(217, 220, 232) !important;
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -67,7 +71,7 @@ body {
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {
-    max-width: 730px;
+    max-width: 1024px;
   }
 
   /* Remove the padding we set earlier */
