@@ -622,4 +622,26 @@ describe('Service: aes', function () {
     expect(newKey[16]).toBeUndefined();
   });
 
+  it('should properly parse an ASCII message', function () {
+
+    var message = convert.stringToArray('This is a test');
+
+    var newMessage = aes.parseMessage(message, 'ascii').message;
+    expect(newMessage[0]).toBe(84);
+    expect(newMessage[15]).toBe(32);
+    expect(newMessage[16]).toBeUndefined();
+  });
+
+  it('should properly parse a hex message', function () {
+
+    var message = convert.hexToArray('00 01 02 03 04 05 06 07 08 09 0a 0b 0c');
+
+    var newMessage = aes.parseMessage(message, 'hex').message;
+
+    expect(newMessage[0]).toBe(0);
+    expect(newMessage[12]).toBe(0x0c);
+    expect(newMessage[15]).toBe(0);
+    expect(newMessage[16]).toBeUndefined();
+  });
+
 });

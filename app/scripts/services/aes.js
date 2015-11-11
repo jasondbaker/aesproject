@@ -411,6 +411,31 @@ angular.module('aesApp')
           };
       },
 
+      // parseMessage function
+      // take an array as input and convert into properly sized 16-byte block
+      // type parameter accepts ascii/hex
+      parseMessage : function(message, type) {
+        var i, padding = 0;
+        var messageLength = message.length;
+
+        padding = 16 - messageLength;
+        if (padding) {
+          for (i=0; i<padding; i++) {
+            if (type === 'ascii') {
+              message.push(32); //ascii space
+            } else {
+              message.push(0);
+            }
+          }
+        }
+
+        return {
+            message : message,
+            size : messageLength,
+            padding : padding
+          };
+      },
+
       // Rcon function
       // get round key constant value
       roundCon : function(val) {

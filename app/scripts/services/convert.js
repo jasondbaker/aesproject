@@ -61,11 +61,12 @@ angular.module('aesApp')
       // converts a string containing hex to a decimal array
       // a string with non-hex characters returns an empty array
       hexToArray : function(s) {
-        var stringLen = s.length;
+        var stringLen;
         var t = [];
-
+        
         //remove all whitespace from the string
         s = s.replace(/\s+/g,'');
+        stringLen = s.length;
 
         // process the string if it doesn't have any non-hex characters
         if (/^[0-9a-fA-F]+$/.test(s)) {

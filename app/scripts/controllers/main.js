@@ -16,7 +16,9 @@ angular.module('aesApp')
     $scope.encryption = {
       plaintext: {
         value : undefined,
-        type : 'ascii'
+        type : 'ascii',
+        parsedPlaintext : undefined,
+        padding: undefined
       },
       key : {
         value : undefined,
@@ -53,13 +55,17 @@ angular.module('aesApp')
       else if (theKey.length < 25) {size = 24;}
       else {size = 32;}
 
+      thePlaintext = aes.parseMessage(thePlaintext, plaintext.type);
+      $scope.encryption.plaintext.parsedPlaintext = thePlaintext.message;
+      $scope.encryption.plaintext.padding = thePlaintext.padding;
+
       theKey = aes.parseKey(theKey,size);
       $scope.encryption.key.parsedKey = convert.arrayToHexString(theKey.key,true);
       $scope.encryption.key.padding = theKey.padding;
       $scope.encryption.key.size = size;
 
       // encrypt input data
-      $scope.encryption.result = aes.encrypt(thePlaintext, theKey.key);
+      $scope.encryption.result = aes.encrypt(thePlaintext.message, theKey.key);
       $scope.encryption.ciphertext.value = convert.arrayToHexString($scope.encryption.result.ciphertext, true);
       $scope.encryption.key.expandedKey = convert.arrayToHexString($scope.encryption.result.expandedKey, true);
     };
