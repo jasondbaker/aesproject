@@ -1,9 +1,9 @@
   <div class="keyinfo panel panel-default">
     <div class="panel-heading">
-      <label>AES {{type}} using
-      <span>{{key.size*8}}-bit Key with</span>
-      <span ng-show="key.padding"> {{key.padding*8}}-bits padding</span>
-      <span ng-show="!key.padding"> no padding</span>
+      <label>AES {{data.type}} using
+      <span>{{data.key.size*8}}-bit Key with</span>
+      <span ng-show="data.key.padding"> {{data.key.padding*8}}-bits padding</span>
+      <span ng-show="!data.key.padding"> no padding</span>
       </label>
     </div>
     <div class="panel-body">
@@ -11,14 +11,14 @@
           <label>Complete key:</label>
       </div>
       <div>
-        {{key.parsedKey}}
+        {{data.key.parsedKey}}
       </div>
       <br>
       <div>
           <label>Expanded key:</label>
       </div>
       <div>
-        {{key.expandedKey}}
+        {{data.key.expandedKey}}
       </div>
       <br>
 
@@ -28,7 +28,7 @@
           <th>Description</th>
           <th>State</th>
         </tr>
-        <tr ng-repeat="log in result.log">
+        <tr ng-repeat="log in data.result.log">
           <td>{{log.round}}</td>
           <td>{{log.description}}</td>
           <td>{{log.state}}</td>

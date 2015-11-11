@@ -86,7 +86,7 @@
           <i class="fa fa-chevron-circle-up"></i> Hide details
         </button>
 
-        <aesdetails ng-show="showDetails" type="encryption" key="encryption.key" result="encryption.result"></aesdetails>
+        <aesdetails ng-show="showDetails" data="encryption"></aesdetails>
 
       </div>
     </div>
@@ -94,7 +94,7 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-8">
         <button class="btn btn-default" type="button" ng-click="encrypt(encryption.plaintext,encryption.key)" ng-disabled="encryptForm.$invalid || encryption.ciphertext.value">Encrypt</button>
-        <button class="btn btn-default" type="button" ng-click="clearEncrypt()" ng-disabled="!encryptForm.$dirty">Clear</button>
+        <button class="btn btn-default" type="button" ng-click="clear(encryption.type)" ng-disabled="!encryptForm.$dirty">Clear</button>
       </div>
     </div>
   </form>

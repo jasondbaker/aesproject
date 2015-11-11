@@ -23,9 +23,7 @@ angular.module('aesApp')
       templateUrl: 'templates/aesdetails.tpl.html',
       replace: true,
       scope: {
-        type: '@',
-        key: '=',
-        result: '='
+        data: '='
       }
     };
   }

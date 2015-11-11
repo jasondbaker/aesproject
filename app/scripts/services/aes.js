@@ -192,6 +192,7 @@ angular.module('aesApp')
         var round, roundSize;
         var state;
         var keyLength = key.length;
+        var log = [];
 
         if (keyLength === 16) { roundSize = 10;}
         if (keyLength === 24) { roundSize = 12;}
@@ -202,19 +203,42 @@ angular.module('aesApp')
 
         // create state and add initial round key before starting rounds
         state = this.addRoundKey(_private.arrayToState(message), this.getRoundKey(expKey,-1,true));
+        log.push({
+            round : 0,
+            description : 'Creating initial state',
+            state : convert.arrayToHexString(_private.stateToArray(state))
+        });
+
         // perform all four encryption steps in the rounds
         for (round=0; round<roundSize-1; round++) {
           state = this.shiftRows(state, true);
           state = this.substitutionBox(state,true);
           state = this.addRoundKey(state, this.getRoundKey(expKey,round,true));
           state = this.mixState(state,true);
+          log.push({
+              round : round+1,
+              description : 'Decrypting',
+              state : convert.arrayToHexString(_private.stateToArray(state))
+          });
         }
 
         // perform final round step without mixing columns
         state = this.shiftRows(state, true);
         state = this.substitutionBox(state,true);
         state = this.addRoundKey(state, this.getRoundKey(expKey,round,true));
-        return _private.stateToArray(state);
+        log.push({
+            round : round+1,
+            description : 'Final decryption result',
+            state : convert.arrayToHexString(_private.stateToArray(state))
+        });
+
+        return {
+          plaintext : _private.stateToArray(state),
+          key : key,
+          keySize : keyLength,
+          expandedKey : expKey,
+          log : log
+        };
       },
 
       // encrypt function

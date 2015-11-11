@@ -497,7 +497,7 @@ describe('Service: aes', function () {
     var key = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
       0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F];
 
-    var plaintext = convert.arrayToHex(aes.decrypt(message, key));
+    var plaintext = convert.arrayToHex(aes.decrypt(message, key).plaintext);
 
     expect(plaintext[0]).toBe('0');
     expect(plaintext[1]).toBe('11');
@@ -528,7 +528,7 @@ describe('Service: aes', function () {
        0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13,
        0x14, 0x15, 0x16, 0x17];
 
-    var plaintext = convert.arrayToHex(aes.decrypt(message, key));
+    var plaintext = convert.arrayToHex(aes.decrypt(message, key).plaintext);
 
     expect(plaintext[0]).toBe('0');
     expect(plaintext[1]).toBe('11');
@@ -559,7 +559,7 @@ describe('Service: aes', function () {
      0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13,
      0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f];
 
-    var plaintext = convert.arrayToHex(aes.decrypt(message, key));
+    var plaintext = convert.arrayToHex(aes.decrypt(message, key).plaintext);
 
     expect(plaintext[0]).toBe('0');
     expect(plaintext[1]).toBe('11');
