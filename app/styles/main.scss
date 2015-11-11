@@ -41,11 +41,20 @@ body {
   }
 }
 
+.instructions {
+  font-size: 14px !important;
+  margin-bottom: 25px !important;
+}
+
 /* Custom page footer */
 .footer {
   padding-top: 19px;
   color: #777;
   border-top: 1px solid #e5e5e5;
+}
+
+.form-body {
+  margin-top: 20px;
 }
 
 .container-narrow > hr {

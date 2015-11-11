@@ -1,98 +1,20 @@
 <div class="jumbotron">
-  <h4>AES Algorithm Encryption</h4>
 
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#encryption">Encryption</a></li>
+    <li><a data-toggle="tab" href="#decryption">Decryption</a></li>
+  </ul>
 
-  <form class="form-horizontal" name="encryptForm">
-    <div class="form-group">
-      <label class="col-sm-2 control-label" for="plaintext">Plaintext</label>
-        <div class="col-sm-8">
-          <input class="form-control"
-          ng-model="encryption.plaintext.value"
-          maxlength="{{encryption.plaintext.type == 'ascii' ? 16 : 48}}"
-          type="text"
-          value="{{encryption.plaintext.value}}"
-          placeholder="Enter text to encrypt in {{encryption.plaintext.type}} format"
-          ng-change="encryption.ciphertext.value = ''"
-          required>
-        </div>
-        <div class="col-sm-2">
-          <button class="btn btn-default btn-sm"
-            type="button"
-            ng-click="setType('encryption','plaintext','ascii')"
-            ng-disabled="encryption.plaintext.type == 'ascii'">
-            <i class="fa fa-font"></i>
-          </button>
-          <button class="btn btn-default btn-sm"
-            type="button"
-            ng-click="setType('encryption','plaintext', 'hex')"
-            ng-disabled="encryption.plaintext.type == 'hex'">
-            <i class="fa fa-calculator"></i>
-          </button>
-        </div>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-2 control-label" for="key">Key</label>
-      <div class="col-sm-8">
-        <input class="form-control"
-        ng-model="encryption.key.value"
-        maxlength="{{encryption.plaintext.type == 'ascii' ? 32 : 80}}" type="text"
-        value="{{encryption.key.value}}"
-        placeholder="Enter an encryption key in {{encryption.key.type}} format"
-        ng-change="encryption.ciphertext.value = ''"
-        required>
-      </div>
-      <div class="col-sm-2">
-        <button class="btn btn-default btn-sm"
-          type="button"
-          ng-click="setType('encryption','key','ascii')"
-          ng-disabled="encryption.key.type == 'ascii'">
-          <i class="fa fa-font"></i>
-        </button>
-        <button class="btn btn-default btn-sm"
-          type="button"
-          ng-click="setType('encryption','key','hex')"
-          ng-disabled="encryption.key.type == 'hex'">
-          <i class="fa fa-calculator"></i>
-        </button>
-      </div>
+  <div class="tab-content">
+
+    <div id="encryption" class="tab-pane fade in active">
+      <div ng-include="'partials/encryption.html'"></div>
     </div>
 
-    <div class="form-group" ng-show="encryption.ciphertext.value">
-      <label class="col-sm-2 control-label" for="ciphertext">Ciphertext</label>
-
-      <div class="col-sm-8">
-
-        <div class="well well-sm">
-        {{encryption.ciphertext.value}}
-        </div>
-
-        <button class="btn btn-default btn-sm"
-          type="button"
-          ng-show="!showDetails"
-          ng-click="showDetails = true">
-          <i class="fa fa-chevron-circle-down"></i> View details
-        </button>
-
-        <button class="btn btn-default btn-sm"
-          type="button"
-          ng-show="showDetails"
-          ng-click="showDetails = false">
-          <i class="fa fa-chevron-circle-up"></i> Hide details
-        </button>
-
-        <aesdetails ng-show="showDetails" type="encryption" key="encryption.key" result="encryption.result"></aesdetails>
-
-      </div>
+    <div id="decryption" class="tab-pane fade">
+      <div ng-include="'partials/decryption.html'"></div>
     </div>
 
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-8">
-        <button class="btn btn-default" type="button" ng-click="encrypt(encryption.plaintext,encryption.key)" ng-disabled="encryptForm.$invalid || encryption.ciphertext.value">Encrypt</button>
-        <button class="btn btn-default" type="button" ng-click="clearEncrypt()" ng-disabled="!encryptForm.$dirty">Clear</button>
-      </div>
-    </div>
-  </form>
-
-
+  </div>
 
 </div>
