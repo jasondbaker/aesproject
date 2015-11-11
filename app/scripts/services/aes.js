@@ -168,7 +168,7 @@ angular.module('aesApp')
         return t;
       }
 
-    }
+    };
 
     // public functions
     var _pub = {
@@ -233,19 +233,14 @@ angular.module('aesApp')
 
         // generate an expanded key
         var expKey = this.expandKey(key);
-        log.push({
-            round : undefined,
-            description : 'Generating expanded key',
-            state : undefined
-        })
 
         // create state and add initial round key before starting rounds
         state = this.addRoundKey(_private.arrayToState(message), this.getRoundKey(expKey,-1,false));
         log.push({
             round : 0,
             description : 'Creating initial state',
-            state : _private.stateToArray(state)
-        })
+            state : convert.arrayToHexString(_private.stateToArray(state))
+        });
         // perform all four encryption steps in the rounds
         for (round=0; round<roundSize-1; round++) {
           state = this.substitutionBox(state,false);
@@ -254,9 +249,9 @@ angular.module('aesApp')
           state = this.addRoundKey(state, this.getRoundKey(expKey,round,false));
           log.push({
               round : round+1,
-              description : 'Executing encryption functions',
-              state : _private.stateToArray(state)
-          })
+              description : 'Encrypting',
+              state : convert.arrayToHexString(_private.stateToArray(state))
+          });
         }
 
         // perform final round step without mixing columns
@@ -266,8 +261,8 @@ angular.module('aesApp')
         log.push({
             round : round+1,
             description : 'Final encryption result',
-            state : _private.stateToArray(state)
-        })
+            state : convert.arrayToHexString(_private.stateToArray(state))
+        });
 
         return {
           ciphertext : _private.stateToArray(state),
@@ -281,8 +276,8 @@ angular.module('aesApp')
       // key expansion function
       // expands a provided key based on the specified size
       // size options: 16 (128bit), 24 (192bit), 32 (256bit)
-      expandKey : function(key, size) {
-        var x, maxRounds;
+      expandKey : function(key) {
+        var maxRounds;
         var expKey = []; //newly expanded key
         var keyLength = key.length;
 
