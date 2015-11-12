@@ -8,4 +8,4 @@
  *
  * Main module of the application.
  */
-angular.module('aesApp', []);
+angular.module('aesApp', ['ngRoute', 'ui.bootstrap']);

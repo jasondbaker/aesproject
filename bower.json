@@ -2,8 +2,9 @@
   "name": "aes",
   "version": "0.0.0",
   "dependencies": {
-    "angular": "1.3.20",
+    "angular": "^1.4.0",
     "bootstrap-sass-official": "^3.2.0",
+    "angular-route": "~1.4.7",
     "angular-bootstrap": "~0.14.3"
   },
   "devDependencies": {

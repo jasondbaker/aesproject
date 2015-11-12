@@ -94,7 +94,7 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-8">
         <button class="btn btn-primary" type="button" ng-click="encrypt(encryption.plaintext,encryption.key)" ng-disabled="encryptForm.$invalid || encryption.ciphertext.value">Encrypt</button>
-        <button class="btn btn-primary" type="button" ng-click="clear(encryption.type)" ng-disabled="!encryptForm.$dirty">Clear</button>
+        <button class="btn btn-primary" type="button" ng-click="clear(encryption.type)" ng-disabled="!(encryption.plaintext.value || encryption.key.value)">Clear</button>
       </div>
     </div>
   </form>

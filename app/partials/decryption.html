@@ -6,8 +6,6 @@
   Key sizes up to 256-bit are supported.
   </p>
 
-
-
   <form class="form-horizontal" name="decryptForm">
 
     <div class="form-group">
@@ -111,7 +109,7 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-8">
         <button class="btn btn-primary" type="button" ng-click="decrypt(decryption.ciphertext,decryption.key)" ng-disabled="decryptForm.$invalid || decryption.plaintext.value">Decrypt</button>
-        <button class="btn btn-primary" type="button" ng-click="clear(decryption.type)" ng-disabled="!decryptForm.$dirty">Clear</button>
+        <button class="btn btn-primary" type="button" ng-click="clear(decryption.type)" ng-disabled="!(decryption.ciphertext.value || decryption.key.value)">Clear</button>
       </div>
     </div>
   </form>

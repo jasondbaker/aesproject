@@ -10,6 +10,15 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   padding: 0.2em 0;
 }
 
+.seal {
+  -ms-transform: rotate(10deg); /* IE 9 */
+  -webkit-transform: rotate(10deg); /* Chrome, Safari, Opera */
+  transform: rotate(10deg);
+  position: absolute;
+  top: 5%;
+  left: 85%;
+}
+
 body {
   padding: 0;
   background-color: #BAB8BD;
@@ -54,7 +63,14 @@ body {
 }
 
 .form-body {
-  margin-top: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border: #ddd;
+  border-left-width: thin;
+  border-right-width: thin;
+  border-bottom-width: thin;
+  border-top-width: 0px;
+  border-style: solid;
 }
 
 .container-narrow > hr {
@@ -107,5 +123,6 @@ body {
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {
     border-bottom: 0;
+    position: relative;
   }
 }

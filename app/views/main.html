@@ -1,20 +1,15 @@
 <div class="jumbotron">
+<img class="seal" src="images/Badge.png" width="125" height="125">
+  <uib-tabset>
 
-  <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#encryption">Encryption</a></li>
-    <li><a data-toggle="tab" href="#decryption">Decryption</a></li>
-  </ul>
-
-  <div class="tab-content">
-
-    <div id="encryption" class="tab-pane fade in active">
+    <uib-tab heading="Encryption">
       <div ng-include="'partials/encryption.html'"></div>
-    </div>
+    </uib-tab>
 
-    <div id="decryption" class="tab-pane fade">
+    <uib-tab heading="Decryption">
       <div ng-include="'partials/decryption.html'"></div>
-    </div>
+    </uib-tab>
 
-  </div>
+  </uib-tabset>
 
 </div>

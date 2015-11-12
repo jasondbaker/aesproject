@@ -43,7 +43,7 @@ angular.module('aesApp')
       },
       key : {
         value : undefined,
-        type: 'ascii',
+        type: 'hex',
         padding: undefined,
         parsedKey: undefined,
         expandedKey: undefined
@@ -56,6 +56,7 @@ angular.module('aesApp')
       type : 'decryption'
     };
 
+    // encrypt the provided plaintext message with a key
     $scope.encrypt = function(plaintext, key){
       var size;
       var thePlaintext = [], theKey = [];
@@ -77,10 +78,12 @@ angular.module('aesApp')
       else if (theKey.length < 25) {size = 24;}
       else {size = 32;}
 
+      // parse the plaintext message to pad it if necessary
       thePlaintext = aes.parseMessage(thePlaintext, plaintext.type);
       $scope.encryption.plaintext.parsedPlaintext = thePlaintext.message;
       $scope.encryption.plaintext.padding = thePlaintext.padding;
 
+      // parse the key and add padding if necessary
       theKey = aes.parseKey(theKey,size);
       $scope.encryption.key.parsedKey = convert.arrayToHexString(theKey.key,true);
       $scope.encryption.key.padding = theKey.padding;
@@ -92,24 +95,25 @@ angular.module('aesApp')
       $scope.encryption.key.expandedKey = convert.arrayToHexString($scope.encryption.result.expandedKey, true);
     };
 
+    // decrypt the provided ciphertext message with a key
     $scope.decrypt = function(ciphertext, key){
       var size;
       var theCiphertext = [], theKey = [];
 
       // convert the input strings into arrays
       theCiphertext = convert.hexToArray(ciphertext.value);
-
       if (key.type === 'ascii') {
         theKey = convert.stringToArray(key.value);
       } else {
         theKey = convert.hexToArray(key.value);
       }
-
+      console.log(theKey);
       // set the proper byte-size for the key
       if (theKey.length < 17) {size = 16;}
       else if (theKey.length < 25) {size = 24;}
       else {size = 32;}
 
+      // pad the provided key if necessary
       theKey = aes.parseKey(theKey,size);
       $scope.decryption.key.parsedKey = convert.arrayToHexString(theKey.key,true);
       $scope.decryption.key.padding = theKey.padding;
@@ -121,6 +125,7 @@ angular.module('aesApp')
       $scope.decryption.key.expandedKey = convert.arrayToHexString($scope.decryption.result.expandedKey, true);
     };
 
+    // reset the specified input form
     $scope.clear = function(type){
       $scope[type].ciphertext.value = '';
       $scope[type].plaintext.value = '';
@@ -148,6 +153,7 @@ angular.module('aesApp')
 
     };
 
+    // toggle plaintext ascii display
     $scope.toggleAscii = function() {
       $scope.decryption.plaintext.displayAscii = !$scope.decryption.plaintext.displayAscii;
     };
