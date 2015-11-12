@@ -3,6 +3,12 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+.bio {
+  width: 200px;
+  float: left;
+  margin: 0 20px 10px 0;
+}
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -15,7 +21,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   -webkit-transform: rotate(10deg); /* Chrome, Safari, Opera */
   transform: rotate(10deg);
   position: absolute;
-  top: 5%;
+  top: 30px;
   left: 85%;
 }
 
@@ -81,7 +87,9 @@ body {
 .jumbotron {
   text-align: left;
   border-bottom: 1px solid #e5e5e5;
-
+  p {
+    font-size: 16px;
+  }
 }
 
 .keyinfo {

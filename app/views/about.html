@@ -1,7 +1,60 @@
 <div class="jumbotron">
 
-  <h3>About</h3>
+  <h3>About this project</h3>
 
+  <br>
+
+  <img class="bio" src="images/jason-headshot-close.jpg">
+  <p>
+  The <a target="newpage" href="http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf">Advanced Encryption Standard (AES)</a> is one of the most popular block
+  encryption algorithms used throughout the world today. Also known as
+  Rijndael, AES was developed by Joan Daemen and Vincent Rijmen.
+  </p>
+
+  <p>
+  I created the <i>AES Funtastic</i> application as a project for a graduate studies
+  course in Computer Security (SEIS 720), taught by Dr. Brad Rubin at the
+  <a target="newpage" href="http://www.stthomas.edu/">University of St. Thomas</a>.
+  </p>
+
+  <p>
+  The purpose of this project was to enhance my understanding of the AES algorithm and
+  to provide a platform that other students could use to exercise the algorithm. The algorithm
+  design was heavily influenced by the paper, <a target="newpage" href="http://www.adamberent.com/documents/AESbyExample.htm"><i>Advanced Encryption Standard by Example</i></a>,
+  written by Adam Berent.
+  </p>
+
+  <p>
+  I wrote the application in Javascript since it's my language <i>du jour</i> and it's
+  widely supported in every modern web browser. The application interface was developed
+  in the <a target="newpage" href="https://angularjs.org/">AngularJS</a> and <a target="newpage" href="http://getbootstrap.com/">Bootstrap</a> frameworks.
+  </p>
+
+  <p>
+  As a learning tool, the application is fairly limited in functionality. While key sizes from
+  128-to-256 bit are fully supported, only a single 16-byte block can be encrypted/decrypted at
+  a time. In other words, you can't use this implementation of the algorithm to encrypt an
+  entire document.
+  </p>
+
+  <p>
+  The application does not represent a reference implementation. While I attempted to follow
+  best practices in code design, I valued readability over brevity and performance. The
+  code implementation makes use of several algorithmic shortcuts by leveraging pre-calculated tables
+  instead of performing raw computations. This design decision may be advantageous in cases where memory
+  is not a constraint.
+  </p>
+
+  <p>
+  I implemented proper unit testing wherever possible to validate the AES algorithm functions.
+  It's important to note that the testing isn't exhaustive, and the algorithm could potentially
+  contain some defects. Do not use this algorithm implementation in production without further testing.
+  </p>
+
+  <p>
+  Finally, this software is licensed under the <a target="newpath" href="https://opensource.org/licenses/MIT">MIT License</a>,
+  and Copyright &copy; 2015 Jason Baker.
+  </p>
 
 
 </div>

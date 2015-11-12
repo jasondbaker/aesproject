@@ -14,7 +14,7 @@
           type="button"
           ng-show="encryption.ciphertext.value"
           ng-click="copyFromEncrypt(); decryptForm.$setDirty()">
-          <i class="fa fa-clone"></i> Copy encryption values
+          <i class="fa fa-clone"></i> Copy encryption key and ciphertext
         </button>
       </div>
     </div>
@@ -72,13 +72,13 @@
         </div>
       </div>
       <div class="col-sm-2">
-        <button class="btn btn-success btn-sm"
+        <button class="btn btn-info btn-sm"
           type="button"
           ng-click="decryption.plaintext.displayAscii=true"
           ng-disabled="decryption.plaintext.displayAscii == true">
           <i class="fa fa-font"></i>
         </button>
-        <button class="btn btn-success btn-sm"
+        <button class="btn btn-info btn-sm"
           type="button"
           ng-click="decryption.plaintext.displayAscii=false"
           ng-disabled="decryption.plaintext.displayAscii == false">
