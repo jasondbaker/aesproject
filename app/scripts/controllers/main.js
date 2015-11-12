@@ -38,7 +38,8 @@ angular.module('aesApp')
     $scope.decryption = {
       plaintext: {
         value : undefined,
-        type : 'ascii'
+        type : 'hex',
+        displayAscii : false
       },
       key : {
         value : undefined,
@@ -147,5 +148,8 @@ angular.module('aesApp')
 
     };
 
+    $scope.toggleAscii = function() {
+      $scope.decryption.plaintext.displayAscii = !$scope.decryption.plaintext.displayAscii;
+    };
 
 }]);

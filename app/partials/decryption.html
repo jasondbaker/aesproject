@@ -42,7 +42,7 @@
       <div class="col-sm-8">
         <input class="form-control"
         ng-model="decryption.key.value"
-        maxlength="80" type="text"
+        maxlength="96" type="text"
         value="{{decryption.key.value}}"
         placeholder="Enter a decryption key in {{decryption.key.type}} format"
         ng-change="decryption.plaintext.value = ''"
@@ -70,9 +70,25 @@
       <div class="col-sm-8">
 
         <div class="well well-sm">
-        {{decryption.plaintext.value}}
+        {{decryption.plaintext.value | hex:decryption.plaintext.displayAscii}}
         </div>
+      </div>
+      <div class="col-sm-2">
+        <button class="btn btn-success btn-sm"
+          type="button"
+          ng-click="decryption.plaintext.displayAscii=true"
+          ng-disabled="decryption.plaintext.displayAscii == true">
+          <i class="fa fa-font"></i>
+        </button>
+        <button class="btn btn-success btn-sm"
+          type="button"
+          ng-click="decryption.plaintext.displayAscii=false"
+          ng-disabled="decryption.plaintext.displayAscii == false">
+          <i class="fa fa-calculator"></i>
+        </button>
+      </div>
 
+      <div class="col-sm-offset-2 col-sm-8">
         <button class="btn btn-default btn-sm"
           type="button"
           ng-show="!showDetails"
