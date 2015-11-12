@@ -1,5 +1,7 @@
 # AES Funtastic!
 
+<img src="https://cloud.githubusercontent.com/assets/4176562/11134584/8e4ce372-8963-11e5-89eb-a32cf26d0710.png" width="90%"></img>
+
 The [Advanced Encryption Standard (AES)](http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf) is one of the most popular block encryption algorithms used throughout the world today. Also known as Rijndael, AES was developed by Joan Daemen and Vincent Rijmen.
 
 I created the AES Funtastic application as a project for a graduate studies course in Computer Security (SEIS 720), taught by Dr. Brad Rubin at the [University of St. Thomas](http://www.stthomas.edu/).
