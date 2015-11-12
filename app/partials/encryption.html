@@ -22,13 +22,13 @@
           required>
         </div>
         <div class="col-sm-2">
-          <button class="btn btn-default btn-sm"
+          <button class="btn btn-success btn-sm"
             type="button"
             ng-click="setType('encryption','plaintext','ascii')"
             ng-disabled="encryption.plaintext.type == 'ascii'">
             <i class="fa fa-font"></i>
           </button>
-          <button class="btn btn-default btn-sm"
+          <button class="btn btn-success btn-sm"
             type="button"
             ng-click="setType('encryption','plaintext', 'hex')"
             ng-disabled="encryption.plaintext.type == 'hex'">
@@ -48,13 +48,13 @@
         required>
       </div>
       <div class="col-sm-2">
-        <button class="btn btn-default btn-sm"
+        <button class="btn btn-success btn-sm"
           type="button"
           ng-click="setType('encryption','key','ascii')"
           ng-disabled="encryption.key.type == 'ascii'">
           <i class="fa fa-font"></i>
         </button>
-        <button class="btn btn-default btn-sm"
+        <button class="btn btn-success btn-sm"
           type="button"
           ng-click="setType('encryption','key','hex')"
           ng-disabled="encryption.key.type == 'hex'">
@@ -93,8 +93,8 @@
 
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-8">
-        <button class="btn btn-default" type="button" ng-click="encrypt(encryption.plaintext,encryption.key)" ng-disabled="encryptForm.$invalid || encryption.ciphertext.value">Encrypt</button>
-        <button class="btn btn-default" type="button" ng-click="clear(encryption.type)" ng-disabled="!encryptForm.$dirty">Clear</button>
+        <button class="btn btn-primary" type="button" ng-click="encrypt(encryption.plaintext,encryption.key)" ng-disabled="encryptForm.$invalid || encryption.ciphertext.value">Encrypt</button>
+        <button class="btn btn-primary" type="button" ng-click="clear(encryption.type)" ng-disabled="!encryptForm.$dirty">Clear</button>
       </div>
     </div>
   </form>

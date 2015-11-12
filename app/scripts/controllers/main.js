@@ -139,5 +139,13 @@ angular.module('aesApp')
       }
     };
 
+    // copy ciphertext and key from encryption to decryption form
+    $scope.copyFromEncrypt = function() {
+      $scope.decryption.key.value = $scope.encryption.key.parsedKey;
+      $scope.decryption.ciphertext.value = $scope.encryption.ciphertext.value;
+      $scope.decryption.key.type = 'hex';
+
+    };
+
 
 }]);

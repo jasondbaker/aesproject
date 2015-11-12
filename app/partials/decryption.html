@@ -6,7 +6,21 @@
   Key sizes up to 256-bit are supported.
   </p>
 
+
+
   <form class="form-horizontal" name="decryptForm">
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-8">
+        <button class="btn btn-primary btn-sm"
+          type="button"
+          ng-show="encryption.ciphertext.value"
+          ng-click="copyFromEncrypt(); decryptForm.$setDirty()">
+          <i class="fa fa-clone"></i> Copy encryption values
+        </button>
+      </div>
+    </div>
+
     <div class="form-group">
       <label class="col-sm-2 control-label" for="ciphertext">Ciphertext</label>
         <div class="col-sm-8">
@@ -28,20 +42,20 @@
       <div class="col-sm-8">
         <input class="form-control"
         ng-model="decryption.key.value"
-        maxlength="{{decryption.plaintext.type == 'ascii' ? 32 : 80}}" type="text"
+        maxlength="80" type="text"
         value="{{decryption.key.value}}"
         placeholder="Enter a decryption key in {{decryption.key.type}} format"
         ng-change="decryption.plaintext.value = ''"
         required>
       </div>
       <div class="col-sm-2">
-        <button class="btn btn-default btn-sm"
+        <button class="btn btn-success btn-sm"
           type="button"
           ng-click="setType('decryption','key','ascii')"
           ng-disabled="decryption.key.type == 'ascii'">
           <i class="fa fa-font"></i>
         </button>
-        <button class="btn btn-default btn-sm"
+        <button class="btn btn-success btn-sm"
           type="button"
           ng-click="setType('decryption','key','hex')"
           ng-disabled="decryption.key.type == 'hex'">
@@ -80,8 +94,8 @@
 
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-8">
-        <button class="btn btn-default" type="button" ng-click="decrypt(decryption.ciphertext,decryption.key)" ng-disabled="decryptForm.$invalid || decryption.plaintext.value">Decrypt</button>
-        <button class="btn btn-default" type="button" ng-click="clear(decryption.type)" ng-disabled="!decryptForm.$dirty">Clear</button>
+        <button class="btn btn-primary" type="button" ng-click="decrypt(decryption.ciphertext,decryption.key)" ng-disabled="decryptForm.$invalid || decryption.plaintext.value">Decrypt</button>
+        <button class="btn btn-primary" type="button" ng-click="clear(decryption.type)" ng-disabled="!decryptForm.$dirty">Clear</button>
       </div>
     </div>
   </form>
