@@ -33,7 +33,7 @@
   <p>
   As a learning tool, the application is fairly limited in functionality. While key sizes from
   128-to-256 bit are fully supported, only a single 16-byte block can be encrypted/decrypted at
-  a time. In other words, you can't use this implementation of the algorithm to encrypt an
+  a time -- basically Electronic Code Book (ECB) mode. You can't use this implementation of the algorithm to encrypt an
   entire document.
   </p>
 
@@ -41,8 +41,7 @@
   The application does not represent a reference implementation. While I attempted to follow
   best practices in code design, I valued readability over brevity and performance. The
   code implementation makes use of several algorithmic shortcuts by leveraging pre-calculated tables
-  instead of performing raw computations. This design decision may be advantageous in cases where memory
-  is not a constraint.
+  instead of performing raw computations. A form of logging is built into the AES functions for testing and analysis purposes.
   </p>
 
   <p>

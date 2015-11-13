@@ -107,7 +107,7 @@ angular.module('aesApp')
       } else {
         theKey = convert.hexToArray(key.value);
       }
-      console.log(theKey);
+      
       // set the proper byte-size for the key
       if (theKey.length < 17) {size = 16;}
       else if (theKey.length < 25) {size = 24;}

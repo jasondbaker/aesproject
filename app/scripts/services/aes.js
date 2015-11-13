@@ -149,7 +149,6 @@ angular.module('aesApp')
         // iterate over state matrix by rows and then columns
         for (col=0; col<4; col++) {
           for (row=0; row<4; row++) {
-            //console.log('row=',row,' col=',col, 'stateVal=',state[row][col]);
             t.push(state[row][col]);
           }
         }

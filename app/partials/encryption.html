@@ -22,18 +22,21 @@
           required>
         </div>
         <div class="col-sm-2">
-          <button class="btn btn-success btn-sm"
+          <a role="button" class="btn btn-success btn-sm"
             type="button"
+            uib-tooltip="ASCII input"
+            tooltip-enable="true"
             ng-click="setType('encryption','plaintext','ascii')"
             ng-disabled="encryption.plaintext.type == 'ascii'">
             <i class="fa fa-font"></i>
-          </button>
-          <button class="btn btn-success btn-sm"
+          </a>
+          <a role="button" class="btn btn-success btn-sm"
             type="button"
+            uib-tooltip="Hex input"
             ng-click="setType('encryption','plaintext', 'hex')"
             ng-disabled="encryption.plaintext.type == 'hex'">
             <i class="fa fa-calculator"></i>
-          </button>
+          </a>
         </div>
     </div>
     <div class="form-group">
@@ -48,18 +51,22 @@
         required>
       </div>
       <div class="col-sm-2">
-        <button class="btn btn-success btn-sm"
+        <a role="button" class="btn btn-success btn-sm"
           type="button"
+          uib-tooltip="ASCII input"
+          tooltip-placement="bottom"
           ng-click="setType('encryption','key','ascii')"
           ng-disabled="encryption.key.type == 'ascii'">
           <i class="fa fa-font"></i>
-        </button>
-        <button class="btn btn-success btn-sm"
+        </a>
+        <a role="button" class="btn btn-success btn-sm"
           type="button"
+          uib-tooltip="Hex input"
+          tooltip-placement="bottom"
           ng-click="setType('encryption','key','hex')"
           ng-disabled="encryption.key.type == 'hex'">
           <i class="fa fa-calculator"></i>
-        </button>
+        </a>
       </div>
     </div>
 

@@ -10,7 +10,9 @@ The purpose of this project was to enhance my understanding of the AES algorithm
 
 ## Application design
 
-The application does not represent a reference implementation. While I attempted to follow best practices in code design, I valued readability over brevity and performance. The code implementation makes use of several algorithmic shortcuts by leveraging pre-calculated tables instead of performing raw computations. This design decision may be advantageous in cases where memory is not a constraint.
+As a learning tool, the application is fairly limited in functionality. While key sizes from 128-to-256 bit are fully supported, only a single 16-byte block can be encrypted/decrypted at a time -- basically Electronic Code Book (ECB) mode. You can't use this implementation of the algorithm to encrypt an entire document.
+
+The application does not represent a reference implementation. While I attempted to follow best practices in code design, I valued readability over brevity and performance. The code implementation makes use of several algorithmic shortcuts by leveraging pre-calculated tables instead of performing raw computations. A form of logging is built into the AES functions for testing and analysis purposes.
 
 I implemented proper unit testing wherever possible to validate the AES algorithm functions. It's important to note that the testing isn't exhaustive, and the algorithm could potentially contain some defects. Do not use this algorithm implementation in production without further testing.
 
