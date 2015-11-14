@@ -242,7 +242,6 @@ angular.module('aesApp')
 
       // encrypt function
       // this is the key driver function that encrypts a message based on a key
-      // currently limited to 16-byte (128-bit) key and message (AES-128)
       encrypt : function(message, key) {
         var round, roundSize;
         var state;
