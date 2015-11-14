@@ -18,24 +18,23 @@ I implemented proper unit testing wherever possible to validate the AES algorith
 
 ## Installation
 
-The application may be installed on any environment supported by Node.js. Both node and the node package manager (npm) must be installed before building this application.
+The application may be installed on any environment supported by Node.js. Both node and the node package manager (npm) must be installed before building this application. The installation process is really easy and should take less than 10 minutes (even less if you already have Node installed on your machine).
 
-The installation process has 4 steps:
+The installation process has 3 steps:
 
   1. Install node on your system (if not already installed)
   2. Clone the project repository to your system
-  3. Install project node packages
-  4. Install project web application libraries
+  3. Install required node packages into the project
 
 The easiest way to install node on your platform is via one of the packages at: [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
 
 If you are on a Mac and use homebrew, you can install node by typing `brew install node`.
 
-Once node is installed on your machine, clone the application by typing `git clone https://github.com/jasondbaker/aesproject.git` in an appropriate directory location (i.e., ~/software/).
+Once node is installed on your machine, install the Grunt task runner CLI using the command `npm install -g grunt-cli`. This installs the grunt command globally on your system so that you can run it from any directory. Grunt automates all of the tasks associated with setting up and running the application.
 
-Go to the root of the newly cloned directory (`cd aesproject`) and install the required packages by typing `npm install`. It may take a few minutes to download and install the packages. Note, some warning messages may appear during the package installation.
+Next, clone the AES Funtastic application by typing `git clone https://github.com/jasondbaker/aesproject.git` in an appropriate directory location on your machine (i.e., ~/project/). Cloning the project will create a new subdirectory called `aesproject` within your current working directory.
 
-Finally, install the web application javascript libraries using the Bower package manager by typing `bower install`.
+Go to the root of the newly cloned directory (`cd aesproject`) and install the required node packages by typing `npm install`. It may take a few minutes to download and install the packages. Note, some warning messages may appear during the package installation.
 
 ## Running
 
