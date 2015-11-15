@@ -47,6 +47,15 @@ Kill the running grunt process (typically ctrl-c in the terminal) to quit the ap
 
 Executing `grunt test` in the application root directory will run the unit tests with karma.
 
+## Future
+
+The application works well today, but could be improved by adding the following features:
+
+  * Better input sanitization and error handling
+  * Mode support to allow for file encryption
+  * More detailed logging
+
+
 ## Licensing
 
 This software is licensed under the [MIT License](https://opensource.org/licenses/MIT), and Copyright © 2015 Jason Baker.
