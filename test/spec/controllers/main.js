@@ -73,5 +73,65 @@ describe('Controller: MainCtrl', function () {
 
   });
 
+  // aes functions are already tested, this is more like an end-to-end test
+  it('should encrypt some data', function () {
+    scope.encryption = {
+      plaintext: {
+        value : '3243f6a8885a308d313198a2e0370734',
+        type : 'hex',
+        parsedPlaintext : undefined,
+        padding: undefined
+      },
+      key : {
+        value : '2b7e151628aed2a6abf7158809cf4f3c',
+        type: 'hex',
+        padding: undefined,
+        parsedKey: undefined,
+        expandedKey: undefined
+      },
+      ciphertext : {
+        value : undefined,
+        type : 'hex'
+      },
+      result : undefined,
+      type : 'encryption'
+    };
+
+    scope.encrypt(scope.encryption.plaintext, scope.encryption.key);
+
+    expect(scope.encryption.key.padding).toBe(0);
+    expect(scope.encryption.ciphertext.value).toBe('39 25 84 1d 02 dc 09 fb dc 11 85 97 19 6a 0b 32');
+
+  });
+
+  // aes functions are already tested, this is more like an end-to-end test
+  it('should decrypt some data', function () {
+    scope.decryption = {
+      plaintext: {
+        value : undefined,
+        type : 'hex',
+        displayAscii : false
+      },
+      key : {
+        value : '2b7e151628aed2a6abf7158809cf4f3c',
+        type: 'hex',
+        padding: undefined,
+        parsedKey: undefined,
+        expandedKey: undefined
+      },
+      ciphertext : {
+        value : '39 25 84 1d 02 dc 09 fb dc 11 85 97 19 6a 0b 32',
+        type : 'hex'
+      },
+      result : undefined,
+      type : 'decryption'
+    };
+
+    scope.decrypt(scope.decryption.ciphertext, scope.decryption.key);
+
+    expect(scope.decryption.key.padding).toBe(0);
+    expect(scope.decryption.plaintext.value).toBe('32 43 f6 a8 88 5a 30 8d 31 31 98 a2 e0 37 07 34');
+
+  });
 
 });
