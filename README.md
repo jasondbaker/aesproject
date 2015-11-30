@@ -34,7 +34,7 @@ Once node is installed on your machine, install the Grunt task runner CLI using 
 
 Next, clone the AES Funtastic application by typing `git clone https://github.com/jasondbaker/aesproject.git` in an appropriate directory location on your machine (i.e., ~/project/). Cloning the project will create a new subdirectory called `aesproject` within your current working directory.
 
-Go to the root of the newly cloned directory (`cd aesproject`) and install the required node packages by typing `npm install`. It may take a few minutes to download and install the packages. Note, some warning messages may appear during the package installation. Note that you will need to have a C compiler installed (i.e., Xcode, gcc) to install some of the packages such as Compass.
+Go to the root of the newly cloned directory (`cd aesproject`) and install the required node packages by typing `npm install`. It may take a few minutes to download and install the packages. Note, some warning messages may appear during the package installation. Also, you will need to have a C compiler installed (i.e., Xcode, gcc) to install some of the packages such as Compass.
 
 ## Running
 
